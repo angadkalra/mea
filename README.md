@@ -12,8 +12,7 @@ https://medium.com/@viewflow/full-stack-django-quick-start-with-jwt-auth-and-rea
 cd backend
 virtualenv env
 source env/bin/activate
-pip install requirements.txt
-./manage.py migrate
+pip install -r requirements.txt
 cd ../frontend
 npm install
 ```
