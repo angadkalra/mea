@@ -10,32 +10,32 @@ https://medium.com/@viewflow/full-stack-django-quick-start-with-jwt-auth-and-rea
 
 setup:
 
-```cd backend
-
+```
+cd backend
 virtualenv env
-
 source env/bin/activate
-
 pip install requirements.txt
-
 ./manage.py migrate
-
 cd ../frontend
-
-npm install```
+npm install
+```
 
 activate backend:
 
 in backend
 
-```./manage.py runserver
+```
+./manage.py runserver
+```
 
-should be running on localhost:8000```
+should be running on localhost:8000
 
 activate frontend:
 
 in frontend
 
-```npm run start
+```
+npm run start
+```
 
-should be running on localhost:3000```
+should be running on localhost:3000
