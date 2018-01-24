@@ -11,6 +11,7 @@ import App from './App';
 import Login from './containers/Login';
 import PrivateRoute from './containers/PrivateRoute';
 import configureStore from './store'
+import LandingPage from './containers/LandingPage';
 
 const history = createHistory()
 
@@ -20,7 +21,7 @@ ReactDOM.render((
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Switch>
-        <Route exact path="/login/" component={Login} />
+        <Route exact path="/welcome/" component={LandingPage} />
         <PrivateRoute path="/" component={App}/>
       </Switch>
     </ConnectedRouter>
