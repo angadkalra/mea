@@ -1,7 +1,5 @@
 ========================
-JWT auth and React/Redux
-========================
-
+# JWT auth and React/Redux
 
 Code for the "Full stack Django: Quick start with JWT auth and React/Redux" article
 
@@ -12,19 +10,11 @@ https://medium.com/@viewflow/full-stack-django-quick-start-with-jwt-auth-and-rea
 
 ```
 cd backend
-
 virtualenv env
-
 source env/bin/activate
-
-pip install requirements.txt
-
-./manage.py migrate
-
+pip install -r requirements.txt
 cd ../frontend
-
 npm install
-
 ```
 
 ### activate backend
