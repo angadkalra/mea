@@ -7,6 +7,7 @@ import Movies from '../media/Movies.png'
 import Discover from '../media/Discover.png'
 import Curator from '../media/Curator.png'
 import Link from 'react-router-redux-dom-link'
+import * as Scroll from 'react-scroll'
 
 import {
     Collapse,
@@ -33,6 +34,8 @@ import {
     CarouselControl,
     CarouselIndicators,
     CarouselCaption } from 'reactstrap';
+
+let ScrollLink = Scroll.Link
       
 const items = [
     {
@@ -141,14 +144,14 @@ export default class Landing extends Component {
             <Navbar color="faded" light fixed="top" className="navbar" style={{paddingLeft: "10%"}}>
                 <NavbarBrand href="/"><img style={{height: "40px"}} src={Brand}/></NavbarBrand>
                 <Nav className="ml-auto">
-                    <NavItem>
+                    <NavItem className="navLink">
                         <NavLink>
-                            About
+                            <ScrollLink to="about" smooth={true} activeClass="activeNavLink"> About </ScrollLink>
                         </NavLink>
                     </NavItem>
-                    <NavItem>
+                    <NavItem className="navLink">
                         <NavLink>
-                            Example
+                        <ScrollLink to="example" smooth={true} activeClass="activeNavLink"> Example </ScrollLink>
                         </NavLink>
                     </NavItem>
                 </Nav>

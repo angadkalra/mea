@@ -70,3 +70,15 @@
 .centerVert{
     position: relative;
 }
+
+.navLink {
+    cursor: pointer;
+}
+
+.navLink:hover {
+    background-color: black;
+}
+
+.activeNavLink {
+    background-color: black;
+}

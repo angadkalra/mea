@@ -24,7 +24,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-
+    onEmailSubmit: (email) => {
+        dispatch(submit(email))
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
