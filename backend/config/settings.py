@@ -69,7 +69,7 @@ DATABASES = {
         'NAME': 'mea',
         'HOST':'138.68.230.155',
         'USER':'root',
-        'PASSWORD':'AskAngadForPassword'
+        'PASSWORD':'5f623e81be64b109ce9e05d4f8106c062524d07869f4caec'
     }
 }
 
