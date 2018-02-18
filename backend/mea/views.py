@@ -14,7 +14,7 @@ class SignUpView(views.APIView):
         except KeyError:
             return HttpResponse('Email not found.', status=400)
 
-        user = User(email=data)
+        user = LandingPageUser(email=data)
         try:
         	user.save()
         except IntegrityError:
