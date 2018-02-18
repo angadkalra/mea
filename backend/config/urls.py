@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .models import User
+from mea.models import User
 
 
 class MessageSerializer(serializers.Serializer):
@@ -21,7 +21,7 @@ class EchoView(views.APIView):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class SignUpView(views.APIView)
+class SignUpView(views.APIView):
     # Given email, create new user and add to User model. 
     def add_user(request):
         if request.method == 'POST':
@@ -47,6 +47,6 @@ urlpatterns = [
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
-    url(r'^api/echo/$', EchoView.as_view())
+    url(r'^api/echo/$', EchoView.as_view()),
     url(r'^api/signup/$', SignUpView.as_view())
 ]

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 import .models import User
 
-class SignUpView()
+class SignUpView():
 	# Given email, create new user and add to User model. 
 	def add_user(request):
 		if request.method == 'POST':
@@ -19,6 +19,7 @@ class SignUpView()
 		else:
 			return HttpResponse(status=405)
 
-# Given binary vector of movie likes, recommend other similar users. 
-def recommend_curators(request):
+class RecommendView():
+	# Given binary vector of movie likes, recommend other similar users. 
+	def recommend_curators(request):
 
