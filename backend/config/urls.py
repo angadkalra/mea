@@ -23,7 +23,7 @@ class EchoView(views.APIView):
 
 class SignUpView(views.APIView):
     # Given email, create new user and add to User model. 
-    def add_user(request):
+    def post(self, request, *args, **kwargs):
         if request.method == 'POST':
 
             content = request.POST
