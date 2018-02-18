@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from .models import User
+from .models import LandingPageUser
 from rest_framework import views
 from django.db.utils import IntegrityError
 

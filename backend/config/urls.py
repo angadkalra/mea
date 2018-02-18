@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.schemas import get_schema_view
 
-from mea.models import User
 from mea.views import SignUpView
 from django.conf.urls.static import static
 
@@ -13,7 +12,6 @@ from django.conf.urls.static import static
 #     TokenObtainPairView,
 #     TokenRefreshView,
 # )
-
 
 class MessageSerializer(serializers.Serializer):
     message = serializers.CharField()
