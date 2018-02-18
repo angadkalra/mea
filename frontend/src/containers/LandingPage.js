@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as reducers from '../reducers'
 
 import Landing from '../components/Landing'
+import {submit} from '../actions/email'
 import {authErrors, isAuthenticated} from '../reducers'
 
 const LandingPage = (props) => {

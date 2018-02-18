@@ -5,14 +5,14 @@ export const EMAIL_REQUEST = '@@email/EMAIL_REQUEST';
 export const EMAIL_SUCCESS = '@@email/EMAIL_SUCCESS';
 export const EMAIL_FAILURE = '@@email/EMAIL_FAILURE';
 
-export const echo = (message) => ({
+export const submit = (email) => ({
   [RSAA]: {
-      endpoint: '/api/echo/',
+      endpoint: '/api/signup/',
       method: 'POST',
-      body: JSON.stringify({message: message}),
+      body: JSON.stringify({email: email}),
       headers: withAuth({ 'Content-Type': 'application/json' }),
       types: [
-        ECHO_REQUEST, ECHO_SUCCESS, ECHO_FAILURE
+        EMAIL_REQUEST, EMAIL_SUCCESS, EMAIL_FAILURE
       ]
   }
 })
