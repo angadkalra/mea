@@ -1,18 +1,23 @@
 from django.http import HttpResponse
-import .models import User
+from .models import User
+from rest_framework import views
+from django.db.utils import IntegrityError
 
-def add_user(request):
-	if request.method == 'POST':
+class SignUpView(views.APIView):
 
-		content = request.POST
-		try:
-			data = content['email']
-		except KeyError:
-			return HttpResponse('Email not found.', status=400)
+    # Given email, create new user and add to User model. 
+    def post(self, request, *args, **kwargs):
+        content = request.data
 
-		user = User(email=data)
-		user.save()
-		
-		return HttpResponse(status=201)
-	else:
-		return HttpResponse(status=405)
+        try:
+            data = content['email']
+        except KeyError:
+            return HttpResponse('Email not found.', status=400)
+
+        user = User(email=data)
+        try:
+        	user.save()
+        except IntegrityError:
+        	return HttpResponse('User already added!', status=201)
+        
+        return HttpResponse(status=201)
