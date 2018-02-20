@@ -71,7 +71,7 @@ DATABASES = {
         'NAME': 'mea',
         'HOST':'138.68.230.155',
         'USER':'root',
-        'PASSWORD':'In the drive'
+        'PASSWORD':'In the Drive'
     }
 }
 

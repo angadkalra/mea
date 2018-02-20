@@ -11,7 +11,8 @@ from django.conf import settings
 
 class SignUpView(views.APIView):
 
-    # Given email, create new user and add to User model. 
+    # Create new user and add to LandingPageUser model
+
     def post(self, request, *args, **kwargs):
         content = request.data
 
@@ -21,13 +22,13 @@ class SignUpView(views.APIView):
             return HttpResponse('Email not found.', status=400)
 
         user = LandingPageUser(email=data)
+
         try:
         	user.save()
         except IntegrityError:
         	return HttpResponse('User already added!', status=201)
         
         return HttpResponse(status=201)
-
 
 class FrontendAppView(View):
     """
@@ -49,3 +50,14 @@ class FrontendAppView(View):
                 """,
                 status=501,
             )
+
+class RecommendCuratorsView(views.APIView):
+
+    # Given a new user and movies they selected, find similar users
+
+    def post(self, request, *args, **kwargs):
+        # The request data will contain the movies selected by user and their user
+        # ID. Response will contain user IDs of the recommended curators and other
+        # info needed. 
+
+        pass
