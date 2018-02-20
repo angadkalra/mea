@@ -118,7 +118,7 @@ export default class Landing extends Component {
         event.preventDefault()
         console.log("Receiving email")
         console.log(this.state.email)
-        this.props.onEmailSubmit(this.state.email)
+        this.props.onSubmit(this.state.email)
     }
 
     render() {
@@ -173,7 +173,8 @@ export default class Landing extends Component {
                                     </InputGroupAddon>
                                 </InputGroup>
                             </Form>
-                            <p style={{marginTop: "20px", }}>Movies | TV | Books | Podcasts</p>           
+                            <p style={{marginTop: "20px", }}>Movies | TV | Books | Podcasts</p>
+                            <p>Coming Soon</p>         
                         </div>
                     </div>
                 </Col>
@@ -221,13 +222,9 @@ export default class Landing extends Component {
 
             <Row className="footer">
                 <Col>
-                    <div className="left" style={{paddingLeft: "20vw", paddingTop: "50px"}}>
-                        <h4>Link</h4>
-                        <p>Nothing yet</p>
-                    </div>
-                    <div className="right" style={{paddingLeft: "20vw", paddingTop: "50px"}}>
-                        <h4>About</h4>
-                        <p>Nothing to report</p>
+                    <div style={{paddingRight: "100px", paddingLeft: "100px", paddingTop: "40px", fontSize: "0.8em"}}>
+                        <p>Info</p>
+                        <p>This project will culminate in a proof of concept testing the idea that human recommendations are preferred over machine learning recommendations. To show your support sign up with your email, so we can keep you updated</p>
                     </div>
                 </Col>
             </Row>
