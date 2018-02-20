@@ -9,6 +9,9 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
 
+from imdbpie import Imdb
+import json
+
 class SignUpView(views.APIView):
 
     # Given email, create new user and add to User model. 
@@ -27,6 +30,66 @@ class SignUpView(views.APIView):
         	return HttpResponse('User already added!', status=201)
         
         return HttpResponse(status=201)
+
+
+class MoviesView(views.APIView):
+    """
+    This view responds with json file containing movie data based on request
+    """
+
+    def post(self, request, *arg, **kwargs ):
+        content = request.data
+        ia = Imdb()
+
+        try:
+            #pass in imdb movie id to get movie details
+            data = content['movieId']
+            try:
+                movie = ia.get_title(data)
+                return HttpResponse(json.dumps(movie))
+            except ValueError:
+                return HttpResponse("Invalid IMDB id", status = 400)
+        except KeyError:
+            pass
+
+        try:
+            #pass in a keyword to get a list
+            #of movies that match
+            data = content['search']
+            try:
+                searchResult = ia.search_for_title(data)
+                return HttpResponse(json.dumps(searchResult))
+            except ValueError:
+                return HttpResponse("Invalid query, does not contain chars", status = 400)
+        except KeyError:
+            pass
+
+        try:
+            #pass int argument between 1-100 to get a list
+            #of the top movies right now
+            data = content['top']
+            top100 = ia.get_popular_movies()
+            try:
+                return HttpResponse(json.dumps(top100['ranks'][:int(data)]))
+            except ValueError:
+                return HttpResponse("ValueError, int between 1-100 plz", status = 400)
+        except KeyError:
+            pass
+
+        try:
+            #pass imdb id to get a list of similar titles
+            data = content['similar']
+            try:
+                similarTitles = ia.get_title_similarities(data)
+                return HttpResponse(json.dumps(similarTitles))
+            except ValueError:
+                return HttpResponse("Invalid IMDB id", status = 400)
+        except KeyError:
+            return HttpResponse('Request Not Understood.', status = 400)
+
+
+
+
 
 
 class FrontendAppView(View):

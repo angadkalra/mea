@@ -14,7 +14,8 @@ SECRET_KEY = '!pp45o$8uagf%rkj79pne099ff=10c-zv-^qndduaua)d@#!wy'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'www.mea.website'
+    'localhost',
+    '138.68.230.155'
 ]
 
 
@@ -71,7 +72,7 @@ DATABASES = {
         'NAME': 'mea',
         'HOST':'138.68.230.155',
         'USER':'root',
-        'PASSWORD':'In the drive'
+        'PASSWORD':'On Drive'
     }
 }
 
