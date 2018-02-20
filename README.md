@@ -36,3 +36,18 @@ npm run start
 ```
 
 should be running on localhost:3000
+
+### In production
+
+
+To run in production first make sure the backend is properly set up. Then, go to the frontend folder and run 
+
+```
+sudo npm run build
+```
+
+And wait for the build process to finish. Then run
+
+```
+python3.6 manage.py runserver 0.0.0.0:80
+```
