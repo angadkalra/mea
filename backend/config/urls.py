@@ -24,11 +24,12 @@ class EchoView(views.APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 urlpatterns = [
-    url(r'^', FrontendAppView.as_view()),
-    # url(r'^$', generic.RedirectView.as_view(url='/api/', permanent=False)),
     url(r'^api/$', get_schema_view()),
     url(r'^api/echo/$', EchoView.as_view()),
     url(r'^api/signup/$', SignUpView.as_view()),
+    url(r'^$', FrontendAppView.as_view()),
+    url(r'^(?:.*)/?$', FrontendAppView.as_view()),
+    # url(r'^$', generic.RedirectView.as_view(url='/api/', permanent=False)),
     # url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     # url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
     # url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view())

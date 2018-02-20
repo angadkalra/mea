@@ -33,7 +33,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -69,7 +69,7 @@ DATABASES = {
         'NAME': 'mea',
         'HOST':'138.68.230.155',
         'USER':'root',
-        'PASSWORD':'AskAngadForPassword'
+        'PASSWORD':'In the drive'
     }
 }
 
@@ -96,6 +96,7 @@ REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 
 STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIR, 'build', 'static'),
+    os.path.join(REACT_APP_DIR, 'build'),
 ]
 
 # Rest Framework

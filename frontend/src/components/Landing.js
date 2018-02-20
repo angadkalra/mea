@@ -118,7 +118,7 @@ export default class Landing extends Component {
         event.preventDefault()
         console.log("Receiving email")
         console.log(this.state.email)
-        this.props.onSubmit(this.state.email)
+        this.props.onEmailSubmit(this.state.email)
     }
 
     render() {
