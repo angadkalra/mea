@@ -9,6 +9,12 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
 
+#user creation and login related tools
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as login_user
+from django.contrib.auth import logout as logout_user
+
 from imdbpie import Imdb
 import json
 
@@ -30,6 +36,57 @@ class SignUpView(views.APIView):
         	return HttpResponse('User already added!', status=201)
         
         return HttpResponse(status=201)
+
+
+class SignUpView2(views.APIView):
+    """
+    Create a new user, requires an e-mail, username, and password
+    """
+
+    def post(self, request, *args, **kwargs):
+        content = request.data
+
+        try:
+            email = content['email']
+            username = content['username']
+            password = content['password']
+            firstName = content['firstName']
+            lastName = content['lastName']
+        except KeyError:
+            return HttpResponse('Error in information format', status = 400)
+
+        try:
+            user = User.objects.create_user(username)
+            user.set_password(password)
+            user.email = email
+            user.first_name = firstName
+            user.last_name = lastName
+            user.save()
+        except IntegrityError:
+            return HttpResponse("User alredy exists.", status=201)
+
+        return HttpResponse("User Created!", status = 201)
+
+
+class LoginView(views.APIView):
+    """
+    takes either user-name or e-mail and check if it matches with the password
+    """
+    def post(self, request, *args, **kwargs):
+        content = request.data
+
+        try:
+            psw = content['password']
+            usn = content['username']
+        except KeyError:
+            return HttpResponse('Error in information format', status = 400)
+
+        user = authenticate(username = usn, password = psw)
+        login_user(request, user)
+        if user is not None:
+            return HttpResponse("Success", status = 201)
+        else:
+            return HttpResponse("Access Denied", status = 201)
 
 
 class MoviesView(views.APIView):
@@ -86,9 +143,6 @@ class MoviesView(views.APIView):
                 return HttpResponse("Invalid IMDB id", status = 400)
         except KeyError:
             return HttpResponse('Request Not Understood.', status = 400)
-
-
-
 
 
 
