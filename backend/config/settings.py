@@ -15,7 +15,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'www.mea.website',
-    'mea.website'
+    'mea.website',
+    'localhost'
 ]
 
 
@@ -72,7 +73,7 @@ DATABASES = {
         'NAME': 'mea',
         'HOST':'138.68.230.155',
         'USER':'root',
-        'PASSWORD':'In the Drive'
+        'PASSWORD':'OnDrive'
     }
 }
 
