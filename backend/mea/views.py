@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from .models import LandingPageUser
+from .models import Movie
+from .models import Profile
 from rest_framework import views
 from django.db.utils import IntegrityError
 import logging
@@ -89,6 +91,117 @@ class LoginView(views.APIView):
             return HttpResponse("Access Denied", status = 201)
 
 
+class LogoutView(views.APIView):
+    """
+    logout the user
+    """
+    def get(self, request, *args, **kwargs):
+        logout_user(request)
+        return HttpResponse("Logged-out", status = 201)
+
+        
+
+
+
+class ProfileView(views.APIView):
+    """
+    returns the profile information for the current user
+    """
+
+    def get(self, request, *arg, **kwargs):
+        current_user = request.user
+
+        if current_user.is_authenticated:
+            data = {}
+            data['username'] = current_user.username
+            data['bio'] = current_user.profile.bio
+            data['movies'] = {}
+            #data['picture'] = current_user.profile.profilePicture
+            #PROFILE PICTURE IS TO DO
+            user_movies = current_user.profile.movies.all()
+            #add in the data dictionary under movies a list
+            #of all the movies
+            index = 0
+            for m in user_movies:
+                index = index + 1
+                m_dict = {}
+                m_dict['imdbId'] = m.imdbId
+                m_dict['title'] = m.title
+                m_dict['posterUrl'] = m.poster
+                m_dict['year'] = m.year
+                m_dict['genres'] = m.genre
+                data['movies'][str(index)] = m_dict
+
+            return HttpResponse(json.dumps(data))
+
+        else:
+            return HttpResponse("No user logged-in.", status = 201)
+
+
+class ProfileUpdateView(views.APIView):
+
+    """
+    updates user profile information such as bio, add or remove movies,
+    or update the profile picture
+    """
+    def post(self, request, *arg, **kwargs):
+        content = request.data
+        current_user = request.user
+
+        if current_user.is_authenticated:
+            #if key is no present - no need to update
+            changeMade = False
+            try:
+                newBio = content['bio']
+                current_user.profile.bio = newBio
+                changeMade = True
+            except KeyError:
+                pass
+
+            try:
+                pictureUrl = content['profile_image']
+                #TODO
+            except KeyError:
+                pass
+
+            try:
+                toAdd = content['add_movie']
+
+                if Movie.objects.filter(imdbId = toAdd).exists():
+                    pass
+                else:
+                    AddMovieToDB(toAdd)
+
+                movieObject = Movie.objects.get(imdbId = toAdd)
+                current_user.profile.movies.add(movieObject)
+                changeMade = True
+            except KeyError:
+                pass
+            except IntegrityError:
+                return HttpResponse("Hmm Something went wrong", status = 400)
+            except ValueError:
+                return HttpResponse("Some of the IMDB ids passed do not exist", status = 400)
+
+            try:
+                toRemove = content['remove_movie']
+                movieObject = Movie.objects.get(imdbId = toRemove)
+                current_user.profile.movies.remove(movieObject)
+                changeMade = True
+            except KeyError:
+                pass
+            except ValueError:
+                return HttpResponse("Movie requested for removal is not on user list", status = 400)
+        else:
+            return HttpResponse("No user logged-in.", status = 201)
+
+        if changeMade:
+            current_user.profile.save()
+            return HttpResponse("Profile updated", status = 201)
+        else:
+            return HttpResponse("No change made - check format", status = 400)
+
+
+
 class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request
@@ -166,3 +279,37 @@ class FrontendAppView(View):
                 """,
                 status=501,
             )
+
+
+
+
+
+
+
+
+
+
+
+
+
+#------------------------------SOME USEFUL FUNCTIONS-----------------------------#
+
+"""
+Adds a movie to the database, raises a ValueError exception
+if the imdbId of the title given does not exist
+
+raise exception of the movie is already in the db
+"""
+def AddMovieToDB(imdbId):
+    ia = Imdb()
+    data = ia.get_title(imdbId)
+    title = data['base']['title']
+    imageUrl = data['base']['image']['url']
+    genres = ia.get_title_genres(imdbId)['genres']
+    year = data['base']['year']
+
+    movie = Movie(imdbId = imdbId, year = year, poster = imageUrl, genre = genres, title = title)
+
+    movie.save()
+
+    return
