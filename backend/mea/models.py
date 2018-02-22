@@ -28,13 +28,3 @@ class Profile(models.Model):
 	@receiver(post_save, sender=User)
 	def save_user_profile(sender, instance, **kwargs):
 		instance.profile.save()
-
-
-'''
-#DJANGO HAS A USER AUTH SYSTEM MAY NOT NEED THIS
-class User(models.Model):
-	username = models.CharField(max_length=20, unique=True)
-	password = models.CharField(max_length=30)
-	email = models.EmailField(unique=True)
-'''
-
