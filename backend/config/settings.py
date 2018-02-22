@@ -15,7 +15,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '138.68.230.155'
+    'www.mea.website',
+    'mea.website'
 ]
 
 
