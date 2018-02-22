@@ -14,6 +14,7 @@ SECRET_KEY = '!pp45o$8uagf%rkj79pne099ff=10c-zv-^qndduaua)d@#!wy'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'localhost',
     'www.mea.website',
     'mea.website',
     'localhost'
