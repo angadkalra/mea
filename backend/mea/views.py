@@ -22,7 +22,8 @@ import json
 
 class SignUpView(views.APIView):
 
-    # Given email, create new user and add to User model. 
+    # Create new user and add to LandingPageUser model
+
     def post(self, request, *args, **kwargs):
         content = request.data
 
@@ -32,6 +33,7 @@ class SignUpView(views.APIView):
             return HttpResponse('Email not found.', status=400)
 
         user = LandingPageUser(email=data)
+
         try:
         	user.save()
         except IntegrityError:
@@ -39,7 +41,7 @@ class SignUpView(views.APIView):
         
         return HttpResponse(status=201)
 
-
+      
 class SignUpView2(views.APIView):
     """
     Create a new user, requires an e-mail, username, and password
@@ -257,8 +259,7 @@ class MoviesView(views.APIView):
         except KeyError:
             return HttpResponse('Request Not Understood.', status = 400)
 
-
-
+          
 class FrontendAppView(View):
     """
     Serves the compiled frontend entry point (only works if you have run `yarn
@@ -279,6 +280,7 @@ class FrontendAppView(View):
                 """,
                 status=501,
             )
+
 
 
 
@@ -313,3 +315,14 @@ def AddMovieToDB(imdbId):
     movie.save()
 
     return
+
+class RecommendCuratorsView(views.APIView):
+
+    # Given a new user and movies they selected, find similar users
+
+    def post(self, request, *args, **kwargs):
+        # The request data will contain the movies selected by user and their user
+        # ID. Response will contain user IDs of the recommended curators and other
+        # info needed. 
+
+        pass
