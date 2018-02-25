@@ -17,7 +17,6 @@ ALLOWED_HOSTS = [
     'localhost',
     'www.mea.website',
     'mea.website',
-    'localhost'
 ]
 
 

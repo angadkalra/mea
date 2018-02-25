@@ -6,14 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.schemas import get_schema_view
 
 from django.conf.urls.static import static
-from mea.views import SignUpView
-from mea.views import FrontendAppView
-from mea.views import MoviesView
-from mea.views import SignUpView2
-from mea.views import LoginView
-from mea.views import LogoutView
-from mea.views import ProfileView
-from mea.views import ProfileUpdateView
+from mea.views import SignUpView, FrontendAppView, MoviesView, SignUpView2, LoginView
+from mea.views import LogoutView, ProfileView, ProfileUpdateView
 
 # from rest_framework_simplejwt.views import (
 #     TokenObtainPairView,

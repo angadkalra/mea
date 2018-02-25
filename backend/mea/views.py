@@ -1,14 +1,10 @@
+import logging, os, json
+
 from django.http import HttpResponse
-from .models import LandingPageUser
-from .models import Movie
-from .models import Profile
+from .models import LandingPageUser, Movie, Profile
 from rest_framework import views
 from django.db.utils import IntegrityError
-import logging
-import os
-
 from django.views.generic import View
-from django.http import HttpResponse
 from django.conf import settings
 
 #user creation and login related tools
@@ -18,7 +14,6 @@ from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
 
 from imdbpie import Imdb
-import json
 
 class SignUpView(views.APIView):
 
@@ -102,9 +97,6 @@ class LogoutView(views.APIView):
         return HttpResponse("Logged-out", status = 201)
 
         
-
-
-
 class ProfileView(views.APIView):
     """
     returns the profile information for the current user
@@ -281,20 +273,18 @@ class FrontendAppView(View):
                 status=501,
             )
 
+class RecommendCuratorsView(views.APIView):
 
+    # Given a new user and movies they selected, find similar users
 
+    def post(self, request, *args, **kwargs):
+        # The request data will contain the movies selected by user and their user
+        # ID. Response will contain user IDs of the recommended curators and other
+        # info needed. 
 
+        pass
 
-
-
-
-
-
-
-
-
-
-#------------------------------SOME USEFUL FUNCTIONS-----------------------------#
+#------------------------------Helper Functions-----------------------------#
 
 """
 Adds a movie to the database, raises a ValueError exception
@@ -315,14 +305,3 @@ def AddMovieToDB(imdbId):
     movie.save()
 
     return
-
-class RecommendCuratorsView(views.APIView):
-
-    # Given a new user and movies they selected, find similar users
-
-    def post(self, request, *args, **kwargs):
-        # The request data will contain the movies selected by user and their user
-        # ID. Response will contain user IDs of the recommended curators and other
-        # info needed. 
-
-        pass
