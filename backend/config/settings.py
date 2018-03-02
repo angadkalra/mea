@@ -98,6 +98,8 @@ STATIC_URL = '/static/'
 
 REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 
+STATIC_ROOT = os.path.join(REACT_APP_DIR, 'build', 'staticfiles')
+
 STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIR, 'build', 'static'),
     os.path.join(REACT_APP_DIR, 'build'),
@@ -114,3 +116,7 @@ STATICFILES_DIRS = [
 #         'rest_framework.authentication.SessionAuthentication',
 #     ),
 # }
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
