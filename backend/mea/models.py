@@ -13,6 +13,7 @@ class Movie(models.Model):
 	title = models.TextField(max_length = None)
 	genre = models.TextField(max_length = None)
 	year = models.CharField(max_length = 10)
+	
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
