@@ -73,7 +73,7 @@ DATABASES = {
         'NAME': 'mea',
         'HOST':'138.68.230.155',
         'USER':'root',
-        'PASSWORD':'OnDrive'
+        'PASSWORD':'5f623e81be64b109ce9e05d4f8106c062524d07869f4caec'
     }
 }
 
@@ -116,7 +116,3 @@ STATICFILES_DIRS = [
 #         'rest_framework.authentication.SessionAuthentication',
 #     ),
 # }
-
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
