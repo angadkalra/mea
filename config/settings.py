@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'mea.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -64,17 +64,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mea.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='DATABASE_URL'
-#     )
-# }
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://jhjiecwjdxucga:f76cd93bf27c0dee001c7e291d355b9d3c9d99fc8e963585bbc78d8458f464bf@ec2-54-243-31-34.compute-1.amazonaws.com:5432/df3gt3g45c3a1t'
+    )
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -97,13 +97,15 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static')
 ]
 
 # Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())
 
 # Rest Framework
 
