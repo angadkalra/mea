@@ -70,13 +70,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mea',
-        'HOST':'138.68.230.155',
-        'USER':'root',
-        'PASSWORD':'5f623e81be64b109ce9e05d4f8106c062524d07869f4caec'
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 # Internationalization
@@ -106,6 +102,10 @@ STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIR, 'build', 'static'),
     os.path.join(REACT_APP_DIR, 'build'),
 ]
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
 
 # Rest Framework
 
