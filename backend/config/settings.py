@@ -98,7 +98,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
+REACT_APP_DIR = os.path.join(os.path.dirname(BASE_DIR), 'frontend')
 
 STATIC_ROOT = os.path.join(BASE_DIR, '..', 'staticfiles')
 
