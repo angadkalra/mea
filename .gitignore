@@ -1,5 +1,5 @@
 *.pyc
 .DS_Store
-/backend/db.sqlite3
-/backend/env/
-/frontend/node_modules
+env/
+node_modules/
+build/
