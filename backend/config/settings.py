@@ -13,11 +13,13 @@ SECRET_KEY = '!pp45o$8uagf%rkj79pne099ff=10c-zv-^qndduaua)d@#!wy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    'www.mea.website',
-    'mea.website',
-]
+# ALLOWED_HOSTS = [
+#     'localhost',
+#     'www.mea.website',
+#     'mea.website',
+# ]
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -104,8 +106,6 @@ STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIR, 'build', 'static'),
     os.path.join(REACT_APP_DIR, 'build'),
 ]
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Rest Framework
 
