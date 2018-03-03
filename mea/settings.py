@@ -70,11 +70,11 @@ WSGI_APPLICATION = 'mea.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='DATABASE_URL'
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='DATABASE_URL'
+#     )
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
