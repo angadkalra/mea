@@ -1,1 +1,1 @@
-web: gunicorn mea.wsgi --log-file -
+web: python3 backend/manage.py runserver
