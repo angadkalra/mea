@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,13 +71,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mea',
-        'HOST':'138.68.230.155',
-        'USER':'root',
-        'PASSWORD':'5f623e81be64b109ce9e05d4f8106c062524d07869f4caec'
-    }
+    'default': dj_database_url.config(
+        default='postgres://jhjiecwjdxucga:f76cd93bf27c0dee001c7e291d355b9d3c9d99fc8e963585bbc78d8458f464bf@ec2-54-243-31-34.compute-1.amazonaws.com:5432/df3gt3g45c3a1t'
+    )
 }
 
 # Internationalization
@@ -98,14 +95,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-REACT_APP_DIR = os.path.join(os.path.dirname(BASE_DIR),'mea','frontend')
-
-STATIC_ROOT = os.path.join(BASE_DIR, '..', 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(REACT_APP_DIR, 'build', 'static'),
-    os.path.join(REACT_APP_DIR, 'build'),
+    os.path.join(BASE_DIR, 'build/static')
 ]
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# Configure Django App for Heroku.
+# import django_heroku
+# django_heroku.settings(locals())
 
 # Rest Framework
 

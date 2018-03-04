@@ -24,6 +24,7 @@ class EchoView(views.APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 urlpatterns = [
+    url(r'^', FrontendAppView.as_view()),
     url(r'^api/$', get_schema_view()),
     url(r'^api/echo/$', EchoView.as_view()),
     url(r'^api/signup/$', SignUpView.as_view()),
@@ -32,8 +33,7 @@ urlpatterns = [
     url(r'^api/logout/$', LogoutView.as_view()),
     url(r'^api/movies/$', MoviesView.as_view()),
     url(r'^api/profile/$', ProfileView.as_view()),
-    url(r'^api/profile/update$', ProfileUpdateView.as_view()),
-    url(r'^$', FrontendAppView.as_view()),
+    url(r'^api/profile/update$', ProfileUpdateView.as_view())
 
     #url(r'^(?:.*)/?$', FrontendAppView.as_view()),
     # url(r'^$', generic.RedirectView.as_view(url='/api/', permanent=False)),
