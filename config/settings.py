@@ -71,9 +71,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://jhjiecwjdxucga:f76cd93bf27c0dee001c7e291d355b9d3c9d99fc8e963585bbc78d8458f464bf@ec2-54-243-31-34.compute-1.amazonaws.com:5432/df3gt3g45c3a1t'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mea',
+        'USER': 'root',
+        'PASSWORD': 'OnDrive',
+        'HOST': '138.68.230.155',
+        'PORT': '',
+    }
 }
 
 # Internationalization
