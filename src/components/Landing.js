@@ -62,7 +62,8 @@ export default class Landing extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             email: "",
-            activeIndex: 0
+            activeIndex: 0,
+            submited: false
         };
 
         this.next = this.next.bind(this);
@@ -117,10 +118,16 @@ export default class Landing extends Component {
     onSubmit = (event) => {
         event.preventDefault()
         this.props.onEmailSubmit(this.state.email)
+        this.setState({submited: true});
     }
 
     render() {
         const { activeIndex } = this.state;
+
+        let submitText = "Keep me updated!";
+        if (this.state.submited) {
+            submitText = "Submited, thanks!";
+        }
 
         const slides = items.map((item) => {
             return (
@@ -167,7 +174,7 @@ export default class Landing extends Component {
                                     <Input name="email" type="email" placeholder="email" onChange={this.handleInputChange} />
                                     <InputGroupAddon>
                                     <Button type="submit" color="primary" style={{borderTopLeftRadius: "0px", borderBottomLeftRadius: 
-                                    "0px"}}>Keep me updated</Button>
+                                    "0px"}}>{submitText}</Button>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </Form>
