@@ -1,22 +1,16 @@
 import React, {Component} from 'react'
+import axios from 'axios'
 import '../css/Landing.css'
-import Brand from '../media/brand.png'
 import Hero from '../media/hero6.jpg'
 import About from '../media/about.png'
 import Movies from '../media/Movies.png'
 import Discover from '../media/Discover.png'
 import Curator from '../media/Curator.png'
-import Link from 'react-router-redux-dom-link'
 import * as Scroll from 'react-scroll'
+import MyNavbar from '../components/Navbar'
 
 import {
     Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -54,6 +48,29 @@ const items = [
         caption: ''
     }
 ];
+
+const navbarItems = [
+    {
+        scrollLink: true,
+        to: "about",
+        name: "About"
+    },
+    {
+        scrollLink: true,
+        to: "example",
+        name: "Example"
+    },
+    {
+        scrollLink: false,
+        to: "/signup",
+        name: "Signup"
+    },
+    {
+        scrollLink: false,
+        to: "/login",
+        name: "Login"
+    }
+]
       
 export default class Landing extends Component {
     constructor(props) {
@@ -117,7 +134,15 @@ export default class Landing extends Component {
 
     onSubmit = (event) => {
         event.preventDefault()
-        this.props.onEmailSubmit(this.state.email)
+        axios.post('/api/signup/', {
+            email: this.state.email
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
         this.setState({submited: true});
     }
 
@@ -146,21 +171,7 @@ export default class Landing extends Component {
         return (
             <Container fluid={true}>
 
-            <Navbar color="faded" light fixed="top" className="navbar" style={{paddingLeft: "10%"}}>
-                <NavbarBrand href="/"><img style={{height: "40px"}} src={Brand}/></NavbarBrand>
-                <Nav className="ml-auto">
-                    <NavItem className="navLink">
-                        <NavLink>
-                            <ScrollLink to="about" smooth={true} activeClass="activeNavLink"> About </ScrollLink>
-                        </NavLink>
-                    </NavItem>
-                    <NavItem className="navLink">
-                        <NavLink>
-                        <ScrollLink to="example" smooth={true} activeClass="activeNavLink"> Example </ScrollLink>
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-            </Navbar>
+            <MyNavbar items={navbarItems}/>
 
             <Row className="landingRow">
                 <Col style={{paddingLeft: "0px", paddingRight: "0px"}}>

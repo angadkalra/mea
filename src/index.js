@@ -1,29 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter } from 'react-router-redux'
-import { Provider } from 'react-redux'
-import {Route, Switch} from 'react-router'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
-import Login from './containers/Login';
-import PrivateRoute from './containers/PrivateRoute';
-import configureStore from './store'
-import LandingPage from './containers/LandingPage';
-
-const history = createHistory()
-
-const store = configureStore(history)
+import Landing from './components/Landing';
+import SignupForm from './components/SignupForm';
+import LoginForm from './components/LoginForm';
 
 ReactDOM.render((
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Switch>
-        <Route exact path="/welcome/" component={LandingPage} />
-        <PrivateRoute path="/" component={App}/>
-      </Switch>
-    </ConnectedRouter>
-  </Provider>
+  <Router>
+    <div>
+      <Route exact={true} path="/" component={Landing} />
+      <Route exact={true} path="/signup" component={SignupForm}/>
+      <Route exact={true} path="/login" component={LoginForm} />
+    </div>
+  </Router>
 ), document.getElementById('root'));

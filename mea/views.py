@@ -7,6 +7,7 @@ from rest_framework import views
 from django.db.utils import IntegrityError
 from django.views.generic import View
 from django.conf import settings
+from django.template import RequestContext
 
 #user creation and login related tools
 from django.contrib.auth.models import User
@@ -22,7 +23,7 @@ class SignUpView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         content = request.data
-
+        
         try:
             data = content['email']
         except KeyError:

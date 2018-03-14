@@ -1,0 +1,16 @@
+.navbar {
+    background-color: rgba(1,1,1,0.2);
+    color: white !important; 
+}
+
+.navLink {
+    cursor: pointer;
+}
+
+.navLink:hover {
+    background-color: black;
+}
+
+.activeNavLink {
+    background-color: black;
+}

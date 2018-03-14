@@ -9,11 +9,6 @@
     
 }
 
-.navbar {
-    background-color: rgba(1,1,1,0.2);
-    color: white !important; 
-}
-
 #hero {
     height: 100%;
     width: 100%;
@@ -69,16 +64,4 @@
 
 .centerVert{
     position: relative;
-}
-
-.navLink {
-    cursor: pointer;
-}
-
-.navLink:hover {
-    background-color: black;
-}
-
-.activeNavLink {
-    background-color: black;
 }

@@ -4,12 +4,20 @@ import { Alert, Button, Jumbotron,  Form, FormGroup, Input, Label, Container, Ro
 import axios from 'axios'
 import MyNavbar from '../components/Navbar'
 
-export default class LoginForm extends Component {
+export default class SignupForm extends Component {
   state = {
     username: '',
     password: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    confPassword: '',
     usernameValid: false,
     passwordValid: false,
+    firstNameValid: false,
+    emailValid: false,
+    lastNameValid: false,
+    confPasswordValid: false,
     submitted: false,
     success: false
   }
@@ -33,9 +41,13 @@ export default class LoginForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
+    console.log(this.state.email);
     console.log(this.state.username);
     console.log(this.state.password);
-    this.setState({submitted: true});
+    console.log(this.state.firstName);
+    console.log(this.state.lastName);
+    let conf = (this.state.confPassword == this.state.password);
+    this.setState({submitted: true, confPasswordValid: conf});
     // axios.post('/api/signup2/', {
     //   email: this.state.email,
     //   username: this.state.username,
@@ -54,7 +66,7 @@ export default class LoginForm extends Component {
 
   render() {
 
-    let submitText = this.state.success ? "Thanks!" : "Login"
+    let submitText = this.state.success ? "Thanks!" : "Submit"
     let navbarItems = []
 
     return (
@@ -63,7 +75,21 @@ export default class LoginForm extends Component {
         <Row> 
           <Col style={{paddingLeft: "20%", paddingRight: "20%", paddingTop: "10vh"}} className="main-signup">
               <Form onSubmit={this.onSubmit}>
-                <h1>Login</h1>
+                <h1>Singup</h1>
+                <FormGroup>
+                  <Label for="email">Email</Label>
+                  <Input type="email" name="email" id="Email" onChange={this.handleInputChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="firstName">First Name</Label>
+                  <Input invalid={this.state.submitted && !this.state.firstNameValid} type="plaintext" name="firstName" id="FirstName" onChange={this.handleInputChange} />
+                  <FormFeedback>Field needs to be filled in</FormFeedback>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="lastName">Last Name</Label>
+                  <Input invalid={this.state.submitted && !this.state.lastNameValid} type="plaintext" name="lastName" id="LastName" onChange={this.handleInputChange} />
+                  <FormFeedback>Field needs to be filled in</FormFeedback>
+                </FormGroup>
                 <FormGroup>
                   <Label for="lastName">Username</Label>
                   <Input invalid={this.state.submitted && !this.state.usernameValid} type="plaintext" name="username" id="Username" onChange={this.handleInputChange} />
@@ -74,7 +100,12 @@ export default class LoginForm extends Component {
                   <Input invalid={this.state.submitted && !this.state.passwordValid} type="password" name="password" id="Password" onChange={this.handleInputChange} />
                   <FormFeedback>Field needs to be filled in</FormFeedback>
                 </FormGroup>
-                <Button type="submit" color="primary">{submitText}</Button>
+                <FormGroup>
+                  <Label for="confPassword">Confirm Password</Label>
+                  <Input invalid={this.state.submitted && !this.state.confPasswordValid} type="password" name="confPassword" id="ConfPassword" onChange={this.handleInputChange} />
+                  <FormFeedback>Passwords need to match</FormFeedback>
+                </FormGroup>
+                  <Button type="submit" color="primary" >{submitText}</Button>
               </Form>
           </Col>
         </Row>
