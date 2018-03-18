@@ -90,6 +90,10 @@ export default class Landing extends Component {
         this.onExited = this.onExited.bind(this);
     }
 
+    componentDidMount() {
+        
+    }
+
     onExiting() {
         this.animating = true;
     }

@@ -64,9 +64,9 @@ class SignUpView2(views.APIView):
             user.last_name = lastName
             user.save()
         except IntegrityError:
-            return HttpResponse("User alredy exists.", status=201)
+            return HttpResponse("User alredy exists.", status=401)
 
-        return HttpResponse("User Created!", status = 201)
+        return HttpResponse("User Created!", status = 202)
 
 
 class LoginView(views.APIView):
@@ -85,7 +85,7 @@ class LoginView(views.APIView):
         user = authenticate(username = usn, password = psw)
         login_user(request, user)
         if user is not None:
-            return HttpResponse("Success", status = 201)
+            return HttpResponse("Success", status = 202)
         else:
             return HttpResponse("Access Denied", status = 401)
 
@@ -112,7 +112,7 @@ class ProfileView(views.APIView):
             data['username'] = current_user.username
             data['id'] = current_user.profile.id
             data['bio'] = current_user.profile.bio
-            data['movies'] = {}
+            data['movies'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_user.profile.movies.all()
@@ -120,14 +120,13 @@ class ProfileView(views.APIView):
             #of all the movies
             index = 0
             for m in user_movies:
-                index = index + 1
                 m_dict = {}
                 m_dict['imdbId'] = m.imdbId
                 m_dict['title'] = m.title
                 m_dict['posterUrl'] = m.poster
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
-                data['movies'][str(index)] = m_dict
+                data['movies'].append(m_dict)
 
             return HttpResponse(json.dumps(data))
 
@@ -136,7 +135,7 @@ class ProfileView(views.APIView):
             #TODO
 
         else:
-            return HttpResponse("No user logged-in.", status = 201)
+            return HttpResponse("No user logged-in.", status = 401)
 
 
 class PublicProfileView(views.APIView):

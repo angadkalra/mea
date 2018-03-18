@@ -1,0 +1,11 @@
+.movie {
+    height: 200px;
+    width: 170px;
+    display: inline-block;
+}
+
+.movie > img {
+    height: 200px;
+    width: 150px;
+    margin: auto;
+}

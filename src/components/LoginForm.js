@@ -36,20 +36,18 @@ export default class LoginForm extends Component {
     console.log(this.state.username);
     console.log(this.state.password);
     this.setState({submitted: true});
-    // axios.post('/api/signup2/', {
-    //   email: this.state.email,
-    //   username: this.state.username,
-    //   password: this.state.password,
-    //   firstName: this.state.firstName,
-    //   lastName: this.state.lastName
-    // })
-    // .then((response) => {
-    //   console.log(response);
-    //   this.setState({submitted: true});
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+    axios.post('/api/login/', {
+      username: this.state.username,
+      password: this.state.password
+    })
+    .then((response) => {
+      console.log(response);
+      this.props.history.push('/profile');
+      this.setState({submitted: true});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   render() {
