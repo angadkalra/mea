@@ -1,4 +1,5 @@
 import logging, os, json
+from .recommend import SimilarUsers
 
 from django.http import HttpResponse
 from .models import LandingPageUser, Movie, Profile
@@ -275,14 +276,18 @@ class FrontendAppView(View):
 
 class RecommendCuratorsView(views.APIView):
 
-    # Given a new user and movies they selected, find similar users
+    # Given userID, return similar users. 
 
-    def post(self, request, *args, **kwargs):
-        # The request data will contain the movies selected by user and their user
-        # ID. Response will contain user IDs of the recommended curators and other
-        # info needed. 
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+        data = {}
 
-        pass
+        if current_user.is_authenticated:
+            matches = SimilarUsers.find(current_user)
+            data['profileIDs'] = matches
+            return HttpResponse(json.dumps(data), status = 200)
+        else:
+            return HttpResponse('Unauthorized user.', status = 401)
 
 #------------------------------Helper Functions-----------------------------#
 
