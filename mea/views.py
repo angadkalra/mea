@@ -132,6 +132,41 @@ class ProfileView(views.APIView):
             return HttpResponse("No user logged-in.", status = 201)
 
 
+class PublicProfileView(views.APIView):
+
+
+    def get(self, request, *arg, **kwargs):
+
+        profileId = kwargs['id'];
+
+        if Profile.objects.filter(id = profileId).exists():
+            current_profile = Profile.objects.get(id = profileId)
+            data = {}
+            data['username'] = current_profile.user.username
+            data['bio'] = current_profile.bio
+            data['movies'] = {}
+            #data['picture'] = current_user.profile.profilePicture
+            #PROFILE PICTURE IS TO DO
+            user_movies = current_profile.movies.all()
+            #add in the data dictionary under movies a list
+            #of all the movies
+            index = 0
+
+            for m in user_movies:
+                index = index + 1
+                m_dict = {}
+                m_dict['imdbId'] = m.imdbId
+                m_dict['title'] = m.title
+                m_dict['posterUrl'] = m.poster
+                m_dict['year'] = m.year
+                m_dict['genres'] = m.genre
+                data['movies'][str(index)] = m_dict
+
+            return HttpResponse(json.dumps(data))
+        else:
+            return HttpResponse('No profile found.', status = 404)
+
+
 class ProfileUpdateView(views.APIView):
 
     """
