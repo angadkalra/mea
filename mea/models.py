@@ -22,8 +22,8 @@ class Profile(models.Model):
 	profilePicture = models.ImageField(upload_to = None, height_field = None, width_field = None, max_length = 200)
 	fake = models.BooleanField(default = False)
 
-	#followers = models.ManyToManyField(Profile)
-	#followings = models.ManyToManyField(Profile)
+	followers = models.ManyToManyField("Profile", blank=True, related_name="followerz")
+	followings = models.ManyToManyField("Profile", blank=True, related_name="followingz")
 
 	@receiver(post_save, sender=User)
 	def create_user_profile(sender, instance, created, **kwargs):

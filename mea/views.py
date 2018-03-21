@@ -108,6 +108,7 @@ class ProfileView(views.APIView):
         if current_user.is_authenticated:
             data = {}
             data['username'] = current_user.username
+            data['id'] = current_user.profile.id
             data['bio'] = current_user.profile.bio
             data['movies'] = {}
             #data['picture'] = current_user.profile.profilePicture
@@ -128,6 +129,10 @@ class ProfileView(views.APIView):
 
             return HttpResponse(json.dumps(data))
 
+            #data['followers'] = current_user.profile.followerz.all()
+            #data['followings'] = current_user.profile.followingz.all()
+            #TODO
+
         else:
             return HttpResponse("No user logged-in.", status = 201)
 
@@ -143,6 +148,7 @@ class PublicProfileView(views.APIView):
             current_profile = Profile.objects.get(id = profileId)
             data = {}
             data['username'] = current_profile.user.username
+            data['id'] = current_profile.id
             data['bio'] = current_profile.bio
             data['movies'] = {}
             #data['picture'] = current_user.profile.profilePicture
@@ -161,6 +167,11 @@ class PublicProfileView(views.APIView):
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
                 data['movies'][str(index)] = m_dict
+
+
+            #data['followers'] = current_profile.followerz.all()
+           # data['followings'] = current_profile.followingz.all()
+           #TODO
 
             return HttpResponse(json.dumps(data))
         else:
@@ -210,6 +221,15 @@ class ProfileUpdateView(views.APIView):
                 return HttpResponse("Hmm Something went wrong", status = 400)
             except ValueError:
                 return HttpResponse("Some of the IMDB ids passed do not exist", status = 400)
+
+
+            try:
+                newFollower = content['add_follower']
+                if Profile.objects.filter(id = newFollower).exists():
+                    pass
+                    #TODO
+            except ValueError:
+                return HttpResponse("User to add does not exist", status = 404)
 
             try:
                 toRemove = content['remove_movie']
