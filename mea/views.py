@@ -305,3 +305,74 @@ def AddMovieToDB(imdbId):
     movie.save()
 
     return
+
+
+"""
+A view I used to generate profile cuz I am lazy to learn
+how to automate sending requests to a node
+"""
+
+"""
+import names
+import random
+
+class GenerateProfile(views.APIView):
+
+    def post(self, request, *args, **kwards):
+        ia = Imdb()
+        top100 = ia.get_popular_movies()['ranks']
+        numInitialMoview = 50
+        numProfiles = 700
+
+        for x in range(numProfiles):
+            firstName = names.get_first_name()
+            lastName = names.get_last_name()
+            email = firstName + lastName + '@fake.com'
+            username = firstName
+            password = lastName
+
+            #create the user
+            try:
+                user = User.objects.create_user(username)
+                user.set_password(password)
+                user.email = email
+                user.first_name = firstName
+                user.last_name = lastName
+                user.save()
+                user.profile.fake = True
+                user.profile.bio = firstName
+                user.profile.save()
+            except IntegrityError:
+                pass
+
+            #generate a random, yet meaningfull list of movies
+            numMovies = random.randint(5,40)
+            randInt = random.randint(1,100)
+            toAdd = top100[randInt]['id'][7:16]
+
+            for i in  range(numMovies):
+                try:
+                    if Movie.objects.filter(imdbId = toAdd).exists():
+                        pass
+                    else:
+                        AddMovieToDB(toAdd)
+                    movieObject = Movie.objects.get(imdbId = toAdd)
+                    user.profile.movies.add(movieObject)
+                    user.profile.save()
+                except KeyError:
+                    pass
+                except IntegrityError:
+                    return HttpResponse("Hmm Something went wrong", status = 400)
+                except UnboundLocalError:
+                    pass
+                try:
+                    toAdd = ia.get_title_similarities(toAdd)['similarities']
+                    try:
+                        randInt = random.randint(1,5)
+                        toAdd = toAdd[randInt]['id'][7:16]
+                    except IndexError:
+                        pass
+                except ValueError:
+                    return HttpResponse(str(toAdd))
+        
+"""

@@ -35,6 +35,10 @@ urlpatterns = [
     url(r'^api/profile/update$', ProfileUpdateView.as_view()),
     url(r'^welcome', FrontendAppView.as_view()),
 
+
+    #just to generate profile
+    #url(r'^api/generateProfiles/$', GenerateProfile.as_view()),
+
     # url(r'^$', generic.RedirectView.as_view(url='/api/', permanent=False)),
     # url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     # url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
