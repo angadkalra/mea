@@ -86,7 +86,7 @@ class LoginView(views.APIView):
         if user is not None:
             return HttpResponse("Success", status = 201)
         else:
-            return HttpResponse("Access Denied", status = 201)
+            return HttpResponse("Access Denied", status = 401)
 
 
 class LogoutView(views.APIView):
@@ -284,17 +284,35 @@ class MoviesView(views.APIView):
         except KeyError:
             pass
 
+
         try:
             #pass int argument between 1-100 to get a list
             #of the top movies right now
-            data = content['top']
+            numtop = content['getop']
             top100 = ia.get_popular_movies()
+            tosend = []
+
+            index = 0
+
+            for m in top100['ranks']:
+                index = index + 1
+                if index > int(numtop):
+                    break
+                m_dict = {}
+                imdbId =  m['id'][7:16]
+                m_dict['imdbId'] = str(imdbId)
+                m_dict['title'] = str(m['title'])
+                m_dict['posterUrl'] = str(m['image']['url'])
+                m_dict['year'] = str(m['year'])
+                tosend.append(m_dict)
+    
             try:
-                return HttpResponse(json.dumps(top100['ranks'][:int(data)]))
+                return HttpResponse(json.dumps(tosend))
             except ValueError:
                 return HttpResponse("ValueError, int between 1-100 plz", status = 400)
         except KeyError:
             pass
+
 
         try:
             #pass imdb id to get a list of similar titles
