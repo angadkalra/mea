@@ -206,29 +206,28 @@ class ProfileUpdateView(views.APIView):
                 pass
 
             try:
-                toAdd = content['add_movie']
+                movies = content['addMovies']
 
-                if Movie.objects.filter(imdbId = toAdd).exists():
-                    pass
-                else:
-                    AddMovieToDB(toAdd)
+                for m in movies:
+                    if not Movie.objects.filter(imdbId = m['imdbId']).exists():
+                        AddMovieToDB(m['imdbId'])
 
-                movieObject = Movie.objects.get(imdbId = toAdd)
-                current_user.profile.movies.add(movieObject)
-                changeMade = True
+                    movieObject = Movie.objects.get(imdbId = m['imdbId'])
+                    current_user.profile.movies.add(movieObject)
+                    changeMade = True
+
             except KeyError:
                 pass
-            except IntegrityError:
-                return HttpResponse("Hmm Something went wrong", status = 400)
             except ValueError:
-                return HttpResponse("Some of the IMDB ids passed do not exist", status = 400)
-
+                return HttpResponse("Invalid movie objects.", status = 400)
 
             try:
                 newFollower = content['add_follower']
                 if Profile.objects.filter(id = newFollower).exists():
                     pass
                     #TODO
+            except KeyError:
+                pass
             except ValueError:
                 return HttpResponse("User to add does not exist", status = 404)
 
