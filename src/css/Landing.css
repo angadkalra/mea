@@ -42,14 +42,14 @@
 }
 
 .left {
-    width: 50%;
+    width: 50% !important;
     height: 100%;
     float: left;
     text-align: left;
 }
 
 .right {
-    width: 50%;
+    width: 50% !important;
     height: 100%;
     float: right;
 }
@@ -64,4 +64,19 @@
 
 .centerVert{
     position: relative;
+}
+
+@media screen and (max-width: 850px) {
+    #aboutPics {
+        display: none;
+    }
+
+    #aboutText {
+        width: 100% !important;
+    }
+
+    #hero-detail {
+        top: 30% !important;
+    }
+
 }

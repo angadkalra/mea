@@ -80,7 +80,8 @@ export default class Landing extends Component {
         this.state = {
             email: "",
             activeIndex: 0,
-            submited: false
+            submited: false,
+            loggedOut: false
         };
 
         this.next = this.next.bind(this);
@@ -91,7 +92,17 @@ export default class Landing extends Component {
     }
 
     componentDidMount() {
-        
+        let that = this;
+        if (!this.state.loggedOut) {
+            axios.get('/api/logout')
+            .then((response) => {
+                console.log("Logged out");
+                that.setState({loggedOut: true});
+            })
+            .catch((err) => {
+                console.log("There was an error logging out");
+            })
+        }
     }
 
     onExiting() {
@@ -203,8 +214,8 @@ export default class Landing extends Component {
             <Row className="landingRow">
                 <Col style={{paddingLeft: "0px", paddingRight: "0px"}}>
                     <div id="about">
-                        <div className="left">
-                            <div className="centerHor centerVert" style={{top: "20%", width: "60%"}}>
+                        <div className="left" id="aboutText">
+                            <div className="centerHor centerVert" style={{top: "10%", width: "60%"}}>
                                 <h2>What do we do?</h2>
                                 <h4 className="paragraph">Human recommendations</h4>
                                 <p>Follow friends and curators with similar taste for great new content recommendations.</p>
@@ -214,8 +225,8 @@ export default class Landing extends Component {
                                 <p>All the books, podcasts, movies, and TV shows you've watched and been recommended, available at your convenience</p>
                             </div>
                         </div>
-                        <div className="right">
-                            <div className="centerHor centerVert" style={{top:"35%", width: "75%"}}>
+                        <div className="right" id="aboutPics">
+                            <div className="centerHor centerVert" style={{top:"20%", width: "75%"}}>
                                 <img style={{height: "100%", width: "100%"}} src={About}/>
                             </div>
                         </div>

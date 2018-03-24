@@ -56,13 +56,15 @@ class SignUpView2(views.APIView):
             return HttpResponse('Error in information format', status = 400)
 
         try:
-            user = User.objects.create_user(username)
-            user.set_password(password)
-            user.email = email
+            user = User.objects.create_user(username, email, password)
             user.first_name = firstName
             user.last_name = lastName
             user.save()
-        except IntegrityError:
+        
+        except Exception as e:
+            # print(e.message)
+            # print(e.type)
+            print(e)
             return HttpResponse("User alredy exists.", status=401)
 
         return HttpResponse("User Created!", status = 202)

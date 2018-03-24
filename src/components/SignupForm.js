@@ -41,15 +41,17 @@ export default class SignupForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    let conf = (this.state.confPassword == this.state.password);
-    this.setState({submitted: true, confPasswordValid: conf});
-    axios.post('/api/signup2/', {
+    let toSend = {
       email: this.state.email,
       username: this.state.username,
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName
-    })
+    }
+    console.log(toSend);
+    let conf = (this.state.confPassword == this.state.password);
+    this.setState({submitted: true, confPasswordValid: conf});
+    axios.post('/api/signup2/', toSend)
     .then((response) => {
       console.log(response);
       this.setState({submitted: true});
@@ -64,6 +66,11 @@ export default class SignupForm extends Component {
 
     let submitText = this.state.success ? "Thanks!" : "Submit"
     let navbarItems = []
+
+    let warning;
+    if(this.state.submitted && !this.state.success) {
+      warning = <Alert style={{marginTop: "20px"}} color="danger">Something went wrong!</Alert>;
+    }
 
     return (
       <Container fluid={true}>
@@ -102,6 +109,7 @@ export default class SignupForm extends Component {
                   <FormFeedback>Passwords need to match</FormFeedback>
                 </FormGroup>
                   <Button type="submit" color="primary" >{submitText}</Button>
+                  {warning}
               </Form>
           </Col>
         </Row>
