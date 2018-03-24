@@ -7,7 +7,7 @@ from rest_framework.schemas import get_schema_view
 
 from django.conf.urls.static import static
 from mea.views import SignUpView, FrontendAppView, MoviesView, SignUpView2, LoginView
-from mea.views import LogoutView, ProfileView, ProfileUpdateView, PublicProfileView
+from mea.views import LogoutView, ProfileView, ProfileUpdateView, RecommendCuratorsView, PublicProfileView
 
 # from rest_framework_simplejwt.views import (
 #     TokenObtainPairView,
@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^api/profile/update$', ProfileUpdateView.as_view()),
     url(r'^api/profile/(?P<id>\d+)/$', PublicProfileView.as_view()),
     url(r'^welcome', FrontendAppView.as_view()),
+    url(r'^api/recommend$', RecommendCuratorsView.as_view()),
 
 
     #just to generate profile
