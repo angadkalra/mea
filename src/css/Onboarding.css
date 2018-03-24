@@ -1,0 +1,13 @@
+.movie-choose {
+    display: inline-block;
+}
+
+/* .movie-choose-cover: hover {
+
+} */
+
+.onboard-row {
+    overflow-y: scroll;
+    height: 80vh;
+    margin-top: 20px;
+}

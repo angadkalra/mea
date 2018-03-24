@@ -43,7 +43,6 @@ class SignUpView2(views.APIView):
     """
     Create a new user, requires an e-mail, username, and password
     """
-
     def post(self, request, *args, **kwargs):
         content = request.data
 

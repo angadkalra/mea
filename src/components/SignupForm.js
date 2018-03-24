@@ -53,6 +53,7 @@ export default class SignupForm extends Component {
     .then((response) => {
       console.log(response);
       this.setState({submitted: true});
+      this.props.history.push('/onboarding');
     })
     .catch((error) => {
       console.log(error);

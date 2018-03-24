@@ -9,6 +9,7 @@ import Landing from './components/Landing';
 import SignupForm from './components/SignupForm';
 import LoginForm from './components/LoginForm';
 import Profile from './components/Profile';
+import Onboarding from './components/Onboarding';
 
 ReactDOM.render((
   <Router>
@@ -17,6 +18,7 @@ ReactDOM.render((
       <Route exact={true} path="/signup" component={SignupForm}/>
       <Route exact={true} path="/login" component={LoginForm} />
       <Route exact={true} path="/profile" component={Profile} />
+      <Route exact={true} path="/onboarding" component={Onboarding} />
     </div>
   </Router>
 ), document.getElementById('root'));
