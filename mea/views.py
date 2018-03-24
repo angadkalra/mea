@@ -86,7 +86,7 @@ class LoginView(views.APIView):
         if user is not None:
             return HttpResponse("Success", status = 201)
         else:
-            return HttpResponse("Access Denied", status = 201)
+            return HttpResponse("Access Denied", status = 401)
 
 
 class LogoutView(views.APIView):
