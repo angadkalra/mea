@@ -8,6 +8,7 @@ from django.db.utils import IntegrityError
 from django.views.generic import View
 from django.conf import settings
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
 
 #user creation and login related tools
 from django.contrib.auth.models import User
@@ -257,7 +258,7 @@ class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request
     """
-
+    @csrf_exempt
     def post(self, request, *arg, **kwargs ):
         content = request.data
         ia = Imdb()
@@ -289,7 +290,7 @@ class MoviesView(views.APIView):
         try:
             #pass int argument between 1-100 to get a list
             #of the top movies right now
-            numtop = content['getop']
+            numtop = content['top']
             top100 = ia.get_popular_movies()
             tosend = []
 
