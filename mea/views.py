@@ -86,7 +86,7 @@ class LoginView(views.APIView):
         if user is not None:
             return HttpResponse("Success", status = 201)
         else:
-            return HttpResponse("Access Denied", status = 201)
+            return HttpResponse("Access Denied", status = 401)
 
 
 class LogoutView(views.APIView):
@@ -329,7 +329,8 @@ class FrontendAppView(View):
                 status=501,
             )
 
-class RecommendCuratorsView(views.APIView):
+
+class FindCuratorsView(views.APIView):
 
     # Given userID, return similar users. 
 
@@ -343,6 +344,35 @@ class RecommendCuratorsView(views.APIView):
             return HttpResponse(json.dumps(data), status = 200)
         else:
             return HttpResponse('Unauthorized user.', status = 401)
+
+
+class RecommendMovieView(views.APIView):
+
+    # Recommends movies to followers.
+    # Input: user ids and movie id 
+
+    def post(self, request, *arg, **kwargs):
+        content = request.data
+        
+        try:
+            imdbID = content['imdbID']
+            profileID = content['profileID']
+        except KeyError:
+            return HttpResponse('Data not available.', status=400)
+
+        if not Movie.objects.filter(imdbId=imdbID).exists():
+            AddMovieToDB(imdbID)
+
+        movie = Movie.objects.get(imdbId=imdbID)
+            
+        # Go through user IDs and add movieID to recommended_movies field
+        for pid in profileID:
+            profile = Profile.objects.get(id=pid)
+            profile.recommended_movies.add(movie)
+
+        return HttpResponse('Successfully added.', status=201)
+
+
 
 #------------------------------Helper Functions-----------------------------#
 
