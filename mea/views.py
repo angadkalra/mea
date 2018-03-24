@@ -8,7 +8,7 @@ from django.db.utils import IntegrityError
 from django.views.generic import View
 from django.conf import settings
 from django.template import RequestContext
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import AllowAny
 
 #user creation and login related tools
 from django.contrib.auth.models import User
@@ -258,7 +258,8 @@ class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request
     """
-    @csrf_exempt
+    permission_classes(AllowAny,)
+    
     def post(self, request, *arg, **kwargs ):
         content = request.data
         ia = Imdb()
