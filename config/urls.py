@@ -37,7 +37,6 @@ urlpatterns = [
     url(r'^welcome', FrontendAppView.as_view()),
     url(r'^api/recommend$', RecommendCuratorsView.as_view()),
 
-
     #just to generate profile
     #url(r'^api/generateProfiles/$', GenerateProfile.as_view()),
 
