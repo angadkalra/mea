@@ -41,14 +41,14 @@
     height: 58vh;
 }
 
-.left {
+#aboutText {
     width: 50% !important;
     height: 100%;
     float: left;
     text-align: left;
 }
 
-.right {
+#aboutPics {
     width: 50% !important;
     height: 100%;
     float: right;

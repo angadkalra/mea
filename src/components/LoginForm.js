@@ -33,20 +33,21 @@ export default class LoginForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
+    let that = this;
     console.log(this.state.username);
     console.log(this.state.password);
-    this.setState({submitted: true});
+    this.setState({submitted: true, success: true});
     axios.post('/api/login/', {
       username: this.state.username,
       password: this.state.password
     })
     .then((response) => {
       console.log(response);
-      this.props.history.push('/profile');
-      this.setState({submitted: true});
+      that.props.history.push('/profile');
     })
     .catch((error) => {
       console.log(error);
+      that.setState({success: false});
     });
   }
 
@@ -54,6 +55,11 @@ export default class LoginForm extends Component {
 
     let submitText = this.state.success ? "Thanks!" : "Login"
     let navbarItems = []
+
+    let warning;
+    if(this.state.submitted && !this.state.success) {
+      warning = <Alert style={{marginTop: "20px"}} color="danger">Something went wrong!</Alert>;
+    }
 
     return (
       <Container fluid={true}>
@@ -73,6 +79,7 @@ export default class LoginForm extends Component {
                   <FormFeedback>Field needs to be filled in</FormFeedback>
                 </FormGroup>
                 <Button type="submit" color="primary">{submitText}</Button>
+                {warning}
               </Form>
           </Col>
         </Row>

@@ -41,6 +41,7 @@ export default class SignupForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
+    let that = this;
     let toSend = {
       email: this.state.email,
       username: this.state.username,
@@ -48,17 +49,30 @@ export default class SignupForm extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName
     }
-    console.log(toSend);
     let conf = (this.state.confPassword == this.state.password);
-    this.setState({submitted: true, confPasswordValid: conf});
+    this.setState({submitted: true, confPasswordValid: conf, success: true});
     axios.post('/api/signup2/', toSend)
+    
     .then((response) => {
       console.log(response);
-      this.setState({submitted: true});
-      this.props.history.push('/onboarding');
+      axios.post('/api/login/', {
+        username: toSend.username,
+        password: toSend.password
+      })
+      
+      .then((response) => {
+        console.log(response);
+        that.props.history.push('/onboarding');
+      })
+      
+      .catch((err) => {
+        that.props.history.push('/login');
+      })
     })
+    
     .catch((error) => {
       console.log(error);
+      that.setState({success: false});
     });
   }
 

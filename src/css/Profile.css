@@ -1,6 +1,7 @@
 .left {
     margin-top: 100px;
-    width: 20%;
+    padding-left: 10px;
+    width: 20% !important;
     height: 100%;
     float: left;
     text-align: left;
@@ -8,15 +9,17 @@
 
 .right {
     margin-top: 100px;
-    width: 80%;
+    width: 80% !important;
     height: 100%;
     float: right;
 }
 
 .profile-row {
     width: 100%;
-    overflow-x: scroll;
-    white-space: nowrap;
+    max-height: 37vh;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    /* white-space: nowrap; */
 }
 
 .profile-col {

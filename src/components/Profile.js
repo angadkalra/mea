@@ -3,9 +3,9 @@ import axios from 'axios'
 import MyNavbar from '../components/Navbar'
 import Movie from '../components/Movie'
 import {Container, Row, Col} from 'reactstrap'
-import '../css/Profile.css'
 import profImg from '../media/profile.png'
 import ScrollArea from 'react-scrollbar'
+import '../css/Profile.css'
 
 const navbarItems = [
     {
@@ -37,13 +37,16 @@ export default class Profile extends Component {
 
     render() {
 
+        let cover = <div style={{objectFit: "cover", top: "0", bottom: "0", height: "10px", width: "10px", backgroundColor: "black"}}> </div>
+
         return (
-            <Container fluid={true}>
+            <Container>
                 <MyNavbar history={this.props.history} items={navbarItems} />
                 
                 <div className="left">
                     <Row>
                         <Col className="my-profile">
+                            <p>{this.state.username}</p>
                             <img src={profImg}/>
                             <div className="bio">
                                 <p>{this.state.bio}</p>
@@ -54,7 +57,7 @@ export default class Profile extends Component {
                     <Row>
                         <Col>
                             <h4>Playlists</h4>
-                            <p>somthing</p>
+                            <p>something</p>
                         </Col>
                     </Row>
                 </div>
@@ -62,13 +65,24 @@ export default class Profile extends Component {
                 <div className="right">
                     <h4> Movies </h4>
 
-                    <div className="profile-row">
+                    <Row className="profile-row">
                         {this.state.movies.map((movie) => {
                             return (
-                                <Movie movie={movie}/>
+                                <Movie style={{marginTop: "10px"}} movie={movie} cover={cover}/>
                             )
                         })}
-                    </div>   
+                    </Row>  
+
+                    <h4>Recommended</h4>
+                    <Row className="profile-row">
+                        {this.state.movies.map((movie) => {
+                            return (
+                                <div>
+                                    <Movie style={{marginTop: "10px"}} movie={movie} cover={cover}/>
+                                </div>
+                            )
+                        })}
+                    </Row>
                 </div>
             </Container>
         )

@@ -1,13 +1,41 @@
-.movie-choose {
-    display: inline-block;
+.movie {
+    position: relative;
+    margin-bottom: 10px;
+    z-index: 1;
 }
 
-/* .movie-choose-cover: hover {
+.movie-choose {
+    display: inline;
+    position: absolute;
+    z-index: 2;
+}
 
-} */
+.movie-cover {
+    position: absolute;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    -webkit-transition: all ease .5s;
+    -moz-transition: all ease .5s;
+    transition: all ease .5s;
+    z-index: 3;
+}
+
+.movie-cover:hover {
+    opacity: 0.4;
+    cursor: pointer;
+}
 
 .onboard-row {
     overflow-y: scroll;
     height: 80vh;
-    margin-top: 20px;
+    margin-top: 100px;
+    /* padding-left: 10%; */
+    padding-right: 0%;
 }
+
+.onboard-movie {
+    padding-right: 2%;
+}
+
