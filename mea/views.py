@@ -109,6 +109,7 @@ class ProfileView(views.APIView):
         if current_user.is_authenticated:
             data = {}
             data['username'] = current_user.username
+            data['id'] = current_user.profile.id
             data['bio'] = current_user.profile.bio
             data['movies'] = {}
             #data['picture'] = current_user.profile.profilePicture
@@ -129,8 +130,53 @@ class ProfileView(views.APIView):
 
             return HttpResponse(json.dumps(data))
 
+            #data['followers'] = current_user.profile.followerz.all()
+            #data['followings'] = current_user.profile.followingz.all()
+            #TODO
+
         else:
             return HttpResponse("No user logged-in.", status = 201)
+
+
+class PublicProfileView(views.APIView):
+
+
+    def get(self, request, *arg, **kwargs):
+
+        profileId = kwargs['id'];
+
+        if Profile.objects.filter(id = profileId).exists():
+            current_profile = Profile.objects.get(id = profileId)
+            data = {}
+            data['username'] = current_profile.user.username
+            data['id'] = current_profile.id
+            data['bio'] = current_profile.bio
+            data['movies'] = {}
+            #data['picture'] = current_user.profile.profilePicture
+            #PROFILE PICTURE IS TO DO
+            user_movies = current_profile.movies.all()
+            #add in the data dictionary under movies a list
+            #of all the movies
+            index = 0
+
+            for m in user_movies:
+                index = index + 1
+                m_dict = {}
+                m_dict['imdbId'] = m.imdbId
+                m_dict['title'] = m.title
+                m_dict['posterUrl'] = m.poster
+                m_dict['year'] = m.year
+                m_dict['genres'] = m.genre
+                data['movies'][str(index)] = m_dict
+
+
+            #data['followers'] = current_profile.followerz.all()
+           # data['followings'] = current_profile.followingz.all()
+           #TODO
+
+            return HttpResponse(json.dumps(data))
+        else:
+            return HttpResponse('No profile found.', status = 404)
 
 
 class ProfileUpdateView(views.APIView):
@@ -176,6 +222,15 @@ class ProfileUpdateView(views.APIView):
                 return HttpResponse("Hmm Something went wrong", status = 400)
             except ValueError:
                 return HttpResponse("Some of the IMDB ids passed do not exist", status = 400)
+
+
+            try:
+                newFollower = content['add_follower']
+                if Profile.objects.filter(id = newFollower).exists():
+                    pass
+                    #TODO
+            except ValueError:
+                return HttpResponse("User to add does not exist", status = 404)
 
             try:
                 toRemove = content['remove_movie']
@@ -310,3 +365,74 @@ def AddMovieToDB(imdbId):
     movie.save()
 
     return
+
+
+"""
+A view I used to generate profile cuz I am lazy to learn
+how to automate sending requests to a node
+"""
+
+"""
+import names
+import random
+
+class GenerateProfile(views.APIView):
+
+    def post(self, request, *args, **kwards):
+        ia = Imdb()
+        top100 = ia.get_popular_movies()['ranks']
+        numInitialMoview = 50
+        numProfiles = 700
+
+        for x in range(numProfiles):
+            firstName = names.get_first_name()
+            lastName = names.get_last_name()
+            email = firstName + lastName + '@fake.com'
+            username = firstName
+            password = lastName
+
+            #create the user
+            try:
+                user = User.objects.create_user(username)
+                user.set_password(password)
+                user.email = email
+                user.first_name = firstName
+                user.last_name = lastName
+                user.save()
+                user.profile.fake = True
+                user.profile.bio = firstName
+                user.profile.save()
+            except IntegrityError:
+                pass
+
+            #generate a random, yet meaningfull list of movies
+            numMovies = random.randint(5,40)
+            randInt = random.randint(1,100)
+            toAdd = top100[randInt]['id'][7:16]
+
+            for i in  range(numMovies):
+                try:
+                    if Movie.objects.filter(imdbId = toAdd).exists():
+                        pass
+                    else:
+                        AddMovieToDB(toAdd)
+                    movieObject = Movie.objects.get(imdbId = toAdd)
+                    user.profile.movies.add(movieObject)
+                    user.profile.save()
+                except KeyError:
+                    pass
+                except IntegrityError:
+                    return HttpResponse("Hmm Something went wrong", status = 400)
+                except UnboundLocalError:
+                    pass
+                try:
+                    toAdd = ia.get_title_similarities(toAdd)['similarities']
+                    try:
+                        randInt = random.randint(1,5)
+                        toAdd = toAdd[randInt]['id'][7:16]
+                    except IndexError:
+                        pass
+                except ValueError:
+                    return HttpResponse(str(toAdd))
+        
+"""
