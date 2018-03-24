@@ -4,6 +4,7 @@ import Movie from '../components/Movie'
 import MyNavbar from '../components/Navbar'
 import axios from 'axios'
 import '../css/Onboarding.css'
+import FaCheck from 'react-icons/lib/fa/check'
 
 export default class Onboarding extends Component {
     constructor(props) {
@@ -49,6 +50,7 @@ export default class Onboarding extends Component {
                         return (
                             <div className="movie">
                                 <div className="movie-cover" onClick={() => this.choose(movie)}>
+                                    <FaCheck style={{color: "white", margin: "0 auto", fontSize: "5em"}}/>
                                 </div>
                                 <Movie style={{position: "absolute"}} key={i} movie={movie} />
                             </div>
