@@ -3,6 +3,9 @@ import numpy as np
 from .models import Profile, Movie
 from django.contrib.auth.models import User
 
+# Given a user, find similar users based on Jaccard similarity
+# of movies they like.
+
 class SimilarUsers(): 
 
 	def find(user):

@@ -206,29 +206,28 @@ class ProfileUpdateView(views.APIView):
                 pass
 
             try:
-                toAdd = content['add_movie']
+                movies = content['addMovies']
 
-                if Movie.objects.filter(imdbId = toAdd).exists():
-                    pass
-                else:
-                    AddMovieToDB(toAdd)
+                for m in movies:
+                    if not Movie.objects.filter(imdbId = m['imdbId']).exists():
+                        AddMovieToDB(m['imdbId'])
 
-                movieObject = Movie.objects.get(imdbId = toAdd)
-                current_user.profile.movies.add(movieObject)
-                changeMade = True
+                    movieObject = Movie.objects.get(imdbId = m['imdbId'])
+                    current_user.profile.movies.add(movieObject)
+                    changeMade = True
+
             except KeyError:
                 pass
-            except IntegrityError:
-                return HttpResponse("Hmm Something went wrong", status = 400)
             except ValueError:
-                return HttpResponse("Some of the IMDB ids passed do not exist", status = 400)
-
+                return HttpResponse("Invalid movie objects.", status = 400)
 
             try:
                 newFollower = content['add_follower']
                 if Profile.objects.filter(id = newFollower).exists():
                     pass
                     #TODO
+            except KeyError:
+                pass
             except ValueError:
                 return HttpResponse("User to add does not exist", status = 404)
 
@@ -347,7 +346,8 @@ class FrontendAppView(View):
                 status=501,
             )
 
-class RecommendCuratorsView(views.APIView):
+
+class FindCuratorsView(views.APIView):
 
     # Given userID, return similar users. 
 
@@ -361,6 +361,35 @@ class RecommendCuratorsView(views.APIView):
             return HttpResponse(json.dumps(data), status = 200)
         else:
             return HttpResponse('Unauthorized user.', status = 401)
+
+
+class RecommendMovieView(views.APIView):
+
+    # Recommends movies to followers.
+    # Input: user ids and movie id 
+
+    def post(self, request, *arg, **kwargs):
+        content = request.data
+        
+        try:
+            imdbID = content['imdbID']
+            profileID = content['profileID']
+        except KeyError:
+            return HttpResponse('Data not available.', status=400)
+
+        if not Movie.objects.filter(imdbId=imdbID).exists():
+            AddMovieToDB(imdbID)
+
+        movie = Movie.objects.get(imdbId=imdbID)
+            
+        # Go through user IDs and add movieID to recommended_movies field
+        for pid in profileID:
+            profile = Profile.objects.get(id=pid)
+            profile.recommended_movies.add(movie)
+
+        return HttpResponse('Successfully added.', status=201)
+
+
 
 #------------------------------Helper Functions-----------------------------#
 

@@ -18,6 +18,7 @@ class Movie(models.Model):
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	movies = models.ManyToManyField(Movie)
+	recommended_movies = models.ManyToManyField(Movie, related_name="recommended_movies")
 	bio = models.TextField(max_length = 300, blank = True)
 	profilePicture = models.ImageField(upload_to = None, height_field = None, width_field = None, max_length = 200)
 	fake = models.BooleanField(default = False)
