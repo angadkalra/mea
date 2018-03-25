@@ -18,6 +18,14 @@ from django.contrib.auth import logout as logout_user
 
 from imdbpie import Imdb
 
+# class GenerateTokensView(views.APIView):
+
+#     def post(self, request, *args, **kwargs):
+#         for user in User.objects.all():
+#             Token.objects.get_or_create(user=user)
+
+#         return HttpResponse("Done.", status = 200)
+
 class SignUpView(views.APIView):
 
     # Create new user and add to LandingPageUser model
@@ -63,34 +71,14 @@ class SignUpView2(views.APIView):
             user.save()
         
         except Exception as e:
-            # print(e.message)
-            # print(e.type)
             print(e)
             return HttpResponse("User alredy exists.", status=401)
 
-        return HttpResponse("User Created!", status = 202)
-
-
-class LoginView(views.APIView):
-    """
-    takes either user-name or e-mail and check if it matches with the password
-    """
-    def post(self, request, *args, **kwargs):
-        content = request.data
-
-        try:
-            psw = content['password']
-            usn = content['username']
-        except KeyError:
-            return HttpResponse('Missing login information.', status = 401)
-
-        user = authenticate(request, username = usn, password = psw)
-        if user is not None:
-            login_user(request, user)
-
-            return HttpResponse("Success", status = 202)
-        else:
-            return HttpResponse("Access Denied", status = 401)
+        response = HttpResponse()
+        response['token'] = str(user.auth_token)
+        response.status_code = 201
+        
+        return response
 
 
 class LogoutView(views.APIView):
@@ -98,11 +86,10 @@ class LogoutView(views.APIView):
     logout the user
     """
 
-    queryset = User.objects.all()
-
     def get(self, request, format=None):
-        # simply delete the token to force a login
+        
         request.user.auth_token.delete()
+
         return HttpResponse(status=200)
 
         
@@ -113,6 +100,8 @@ class ProfileView(views.APIView):
 
     def get(self, request, *arg, **kwargs):
         current_user = request.user
+
+        print(current_user)
 
         if current_user.is_authenticated:
             data = {}
@@ -158,7 +147,7 @@ class PublicProfileView(views.APIView):
             data['username'] = current_profile.user.username
             data['id'] = current_profile.id
             data['bio'] = current_profile.bio
-            data['movies'] = {}
+            data['movies'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_profile.movies.all()
@@ -174,7 +163,7 @@ class PublicProfileView(views.APIView):
                 m_dict['posterUrl'] = m.poster
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
-                data['movies'][str(index)] = m_dict
+                data['movies'].append(m_dict)
 
 
             #data['followers'] = current_profile.followerz.all()

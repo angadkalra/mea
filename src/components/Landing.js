@@ -92,17 +92,17 @@ export default class Landing extends Component {
     }
 
     componentDidMount() {
-        let that = this;
-        if (!this.state.loggedOut) {
-            axios.get('/api/logout')
-            .then((response) => {
-                console.log("Logged out");
-                that.setState({loggedOut: true});
-            })
-            .catch((err) => {
-                console.log("There was an error logging out");
-            })
-        }
+        // let that = this;
+        // if (!this.state.loggedOut) {
+        //     axios.get('/api/logout')
+        //     .then((response) => {
+        //         console.log("Logged out");
+        //         that.setState({loggedOut: true});
+        //     })
+        //     .catch((err) => {
+        //         console.log("There was an error logging out");
+        //     })
+        // }
     }
 
     onExiting() {

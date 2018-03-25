@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import Brand from '../media/brand.png'
-import {Nav, Navbar, NavItem, NavLink, NavbarBrand, Button} from 'reactstrap'
+import {Nav, Navbar, NavItem, NavLink, NavbarBrand, Button, Input} from 'reactstrap'
 import * as Scroll from 'react-scroll'
 import {Link} from 'react-router-dom'
 import '../css/Navbar.css'
@@ -11,9 +11,14 @@ export default class MyNavbar extends Component {
     constructor(props) {
         super(props);
         this.logout = this.logout.bind(this);
+        this.state = {
+            search: "",
+            results: []
+        }
     }
 
     logout() {
+        localStorage.setItem('authToken', "")
         axios.get('/api/logout/')
         .then((response) => {
             this.props.history.push('/login')
@@ -35,8 +40,40 @@ export default class MyNavbar extends Component {
             <Link style={{color: "white", textDecoration: "none"}} to={item.to}> {item.name} </Link>
         )
     }
+
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+        let that = this;
+        axios.post('/movies/search/', {
+            query: value
+        })
+        .then((response) => {
+            console.log(response);
+            that.setState({results: response.data});
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+      }
     
     render() {
+
+        let search;
+        if (this.props.search) {
+            search = 
+                <div style={{marginLeft: "20px"}}>
+                    <Input list="searches" placeholder="Search..." name="search" onChange={this.handleInputChange} />
+                    <datalist id="searches">
+                        {this.state.results.map((movie) => {
+                            return (
+                                <option value={movie.title}/>
+                            )
+                        })}
+                    </datalist>
+                </div>
+        }
+
         return (
             <Navbar color="faded" light fixed="top" className="navbar" style={{paddingLeft: "10%"}}>
                 <NavbarBrand href="/"><img style={{height: "40px"}} src={Brand}/></NavbarBrand>
@@ -60,6 +97,7 @@ export default class MyNavbar extends Component {
                             )
                         }
                     })}
+                    {search}
                 </Nav>
             </Navbar>
         )

@@ -43,6 +43,9 @@ export default class LoginForm extends Component {
     })
     .then((response) => {
       console.log(response);
+      let auth = 'Token ' + response.data.token;
+      localStorage.setItem('authToken', auth);
+      axios.defaults.headers.common['Authorization'] = auth;
       that.props.history.push('/profile');
     })
     .catch((error) => {
