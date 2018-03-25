@@ -10,6 +10,7 @@ import SignupForm from './components/SignupForm';
 import LoginForm from './components/LoginForm';
 import Profile from './components/Profile';
 import Onboarding from './components/Onboarding';
+import MovieBig from './components/MovieBig';
 
 ReactDOM.render((
   <Router>
@@ -19,6 +20,7 @@ ReactDOM.render((
       <Route exact={true} path="/login" component={LoginForm} />
       <Route exact={true} path="/profile" component={Profile} />
       <Route exact={true} path="/onboarding" component={Onboarding} />
+      <Route path="/movie/:id" component={MovieBig} />
     </div>
   </Router>
 ), document.getElementById('root'));

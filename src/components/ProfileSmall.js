@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import '../css/Movie.css'
+import profImg from '../media/profile.png'
+import '../css/ProfileSmall.css'
 
-export default class Movie extends Component {
+export default class ProfileSmall extends Component {
     constructor(props) {
         super(props);
         this.goto = this.goto.bind(this)
@@ -17,8 +18,8 @@ export default class Movie extends Component {
     render() {
         return (
             <div style={this.props.style} onClick={this.goto}>
-                <div className="movie">
-                    <img src={this.props.movie.posterUrl}/>
+                <div className="profileSmall">
+                    <img src={profImg}/>
                 </div>
             </div>
         )

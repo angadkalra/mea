@@ -68,7 +68,7 @@ export default class Profile extends Component {
                     <Row className="profile-row">
                         {this.state.movies.map((movie) => {
                             return (
-                                <Movie style={{marginTop: "10px"}} movie={movie} cover={cover}/>
+                                <Movie style={{marginTop: "10px", cursor: "pointer"}} movie={movie} history={this.props.history}/>
                             )
                         })}
                     </Row>  
@@ -78,7 +78,7 @@ export default class Profile extends Component {
                         {this.state.movies.map((movie) => {
                             return (
                                 <div>
-                                    <Movie style={{marginTop: "10px"}} movie={movie} cover={cover}/>
+                                    <Movie style={{marginTop: "10px", cursor: "pointer"}} movie={movie} cover={cover} history={this.props.history}/>
                                 </div>
                             )
                         })}

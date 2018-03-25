@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Row, Col, Container} from 'reactstrap'
+import {Row, Col, Container, Button} from 'reactstrap'
 import Movie from '../components/Movie'
 import MyNavbar from '../components/Navbar'
 import axios from 'axios'
@@ -13,6 +13,7 @@ export default class Onboarding extends Component {
             chosen: [],
             top: []
         }
+        this.state.chose
     }
 
     componentDidMount() {
@@ -27,15 +28,29 @@ export default class Onboarding extends Component {
         .catch((error) => {
             console.log("Couldnt get top");
         })
-        
     }
 
     choose(movie) {
         console.log(movie);
-        let chosen = this.chosen;
-        let top = this.top;
+        let chosen = this.state.chosen;
+        let top = this.state.top;
         chosen.push(movie);
-        this.setState({chosen: chosen})
+        let index = top.indexOf(movie);
+        top.splice(index,1);
+        this.setState({chosen: chosen, top: top})
+    }
+
+    submit = (event) => {
+        let that = this;
+        axios.post('/api/profile/update/', {
+            addMovies: that.state.chosen
+        })
+        .then((response) => {
+            this.props.history.push('/profile');
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     render() {
@@ -43,20 +58,21 @@ export default class Onboarding extends Component {
         let navbarItems = []
 
         return (
-            <Container>
+            <Container style={{textAlign: "center"}}>
                 <MyNavbar items={navbarItems} />
                 <Row className="onboard-row">
                     {this.state.top.map((movie, i) => {
                         return (
                             <div className="movie">
                                 <div className="movie-cover" onClick={() => this.choose(movie)}>
-                                    <FaCheck style={{color: "white", margin: "0 auto", fontSize: "5em"}}/>
+                                    <FaCheck id="check"/>
                                 </div>
                                 <Movie style={{position: "absolute"}} key={i} movie={movie} />
                             </div>
                         )
                     })}
                 </Row>
+                <Button style={{marginTop: "20px"}} color="primary" onClick={this.submit}>Continue</Button>
             </Container>
         )
     }
