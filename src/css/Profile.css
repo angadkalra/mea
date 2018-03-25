@@ -1,0 +1,43 @@
+.left {
+    margin-top: 100px;
+    padding-left: 10px;
+    width: 20% !important;
+    height: 100%;
+    float: left;
+    text-align: left;
+}
+
+.right {
+    margin-top: 100px;
+    width: 80% !important;
+    height: 100%;
+    float: right;
+}
+
+.profile-row {
+    width: 100%;
+    max-height: 37vh;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    /* white-space: nowrap; */
+}
+
+.profile-col {
+    display: inline-block;
+    float: none;
+}
+
+.my-profile {
+    
+}
+
+.bio {
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.my-profile > img {
+    width: 80%;
+    margin: auto;
+}

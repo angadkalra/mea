@@ -9,11 +9,6 @@
     
 }
 
-.navbar {
-    background-color: rgba(1,1,1,0.2);
-    color: white !important; 
-}
-
 #hero {
     height: 100%;
     width: 100%;
@@ -46,15 +41,15 @@
     height: 58vh;
 }
 
-.left {
-    width: 50%;
+#aboutText {
+    width: 50% !important;
     height: 100%;
     float: left;
     text-align: left;
 }
 
-.right {
-    width: 50%;
+#aboutPics {
+    width: 50% !important;
     height: 100%;
     float: right;
 }
@@ -71,14 +66,17 @@
     position: relative;
 }
 
-.navLink {
-    cursor: pointer;
-}
+@media screen and (max-width: 850px) {
+    #aboutPics {
+        display: none;
+    }
 
-.navLink:hover {
-    background-color: black;
-}
+    #aboutText {
+        width: 100% !important;
+    }
 
-.activeNavLink {
-    background-color: black;
+    #hero-detail {
+        top: 30% !important;
+    }
+
 }

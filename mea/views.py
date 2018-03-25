@@ -7,6 +7,7 @@ from rest_framework import views
 from django.db.utils import IntegrityError
 from django.views.generic import View
 from django.conf import settings
+from django.template import RequestContext
 
 #user creation and login related tools
 from django.contrib.auth.models import User
@@ -22,7 +23,7 @@ class SignUpView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         content = request.data
-
+        
         try:
             data = content['email']
         except KeyError:
@@ -42,7 +43,6 @@ class SignUpView2(views.APIView):
     """
     Create a new user, requires an e-mail, username, and password
     """
-
     def post(self, request, *args, **kwargs):
         content = request.data
 
@@ -56,16 +56,18 @@ class SignUpView2(views.APIView):
             return HttpResponse('Error in information format', status = 400)
 
         try:
-            user = User.objects.create_user(username)
-            user.set_password(password)
-            user.email = email
+            user = User.objects.create_user(username, email, password)
             user.first_name = firstName
             user.last_name = lastName
             user.save()
-        except IntegrityError:
-            return HttpResponse("User alredy exists.", status=201)
+        
+        except Exception as e:
+            # print(e.message)
+            # print(e.type)
+            print(e)
+            return HttpResponse("User alredy exists.", status=401)
 
-        return HttpResponse("User Created!", status = 201)
+        return HttpResponse("User Created!", status = 202)
 
 
 class LoginView(views.APIView):
@@ -84,7 +86,7 @@ class LoginView(views.APIView):
         user = authenticate(username = usn, password = psw)
         login_user(request, user)
         if user is not None:
-            return HttpResponse("Success", status = 201)
+            return HttpResponse("Success", status = 202)
         else:
             return HttpResponse("Access Denied", status = 401)
 
@@ -111,7 +113,7 @@ class ProfileView(views.APIView):
             data['username'] = current_user.username
             data['id'] = current_user.profile.id
             data['bio'] = current_user.profile.bio
-            data['movies'] = {}
+            data['movies'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_user.profile.movies.all()
@@ -119,14 +121,13 @@ class ProfileView(views.APIView):
             #of all the movies
             index = 0
             for m in user_movies:
-                index = index + 1
                 m_dict = {}
                 m_dict['imdbId'] = m.imdbId
                 m_dict['title'] = m.title
                 m_dict['posterUrl'] = m.poster
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
-                data['movies'][str(index)] = m_dict
+                data['movies'].append(m_dict)
 
             return HttpResponse(json.dumps(data))
 
@@ -135,7 +136,7 @@ class ProfileView(views.APIView):
             #TODO
 
         else:
-            return HttpResponse("No user logged-in.", status = 201)
+            return HttpResponse("No user logged-in.", status = 401)
 
 
 class PublicProfileView(views.APIView):
@@ -251,11 +252,42 @@ class ProfileUpdateView(views.APIView):
 
 
 
+class GetTopMoviesView(views.APIView):
+    def get(self, request, *arg, **kwargs):
+
+        ia = Imdb()
+
+        #pass int argument between 1-100 to get a list
+        #of the top movies right now
+        numtop = 50
+        top100 = ia.get_popular_movies()
+        tosend = []
+
+        index = 0
+
+        for m in top100['ranks']:
+            index = index + 1
+            if index > int(numtop):
+                break
+            m_dict = {}
+            imdbId =  m['id'][7:16]
+            m_dict['imdbId'] = str(imdbId)
+            m_dict['title'] = str(m['title'])
+            m_dict['posterUrl'] = str(m['image']['url'])
+            m_dict['year'] = str(m['year'])
+            tosend.append(m_dict)
+
+        try:
+            return HttpResponse(json.dumps(tosend))
+        except ValueError:
+            return HttpResponse("ValueError, int between 1-100 plz", status = 400)
+
+
 class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request
     """
-
+    
     def post(self, request, *arg, **kwargs ):
         content = request.data
         ia = Imdb()
@@ -287,7 +319,7 @@ class MoviesView(views.APIView):
         try:
             #pass int argument between 1-100 to get a list
             #of the top movies right now
-            numtop = content['getop']
+            numtop = content['top']
             top100 = ia.get_popular_movies()
             tosend = []
 
