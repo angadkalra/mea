@@ -8,7 +8,6 @@ from django.db.utils import IntegrityError
 from django.views.generic import View
 from django.conf import settings
 from django.template import RequestContext
-from rest_framework.permissions import AllowAny
 
 #user creation and login related tools
 from django.contrib.auth.models import User
@@ -254,11 +253,41 @@ class ProfileUpdateView(views.APIView):
 
 
 
+class GetTopMoviesView(views.APIView):
+    def get(self, request, *arg, **kwargs):
+
+        ia = Imdb()
+
+        #pass int argument between 1-100 to get a list
+        #of the top movies right now
+        numtop = 50
+        top100 = ia.get_popular_movies()
+        tosend = []
+
+        index = 0
+
+        for m in top100['ranks']:
+            index = index + 1
+            if index > int(numtop):
+                break
+            m_dict = {}
+            imdbId =  m['id'][7:16]
+            m_dict['imdbId'] = str(imdbId)
+            m_dict['title'] = str(m['title'])
+            m_dict['posterUrl'] = str(m['image']['url'])
+            m_dict['year'] = str(m['year'])
+            tosend.append(m_dict)
+
+        try:
+            return HttpResponse(json.dumps(tosend))
+        except ValueError:
+            return HttpResponse("ValueError, int between 1-100 plz", status = 400)
+
+
 class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request
     """
-    permission_classes(AllowAny,)
     
     def post(self, request, *arg, **kwargs ):
         content = request.data
