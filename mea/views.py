@@ -101,6 +101,8 @@ class ProfileView(views.APIView):
     def get(self, request, *arg, **kwargs):
         current_user = request.user
 
+        print(current_user)
+
         if current_user.is_authenticated:
             data = {}
             data['username'] = current_user.username
