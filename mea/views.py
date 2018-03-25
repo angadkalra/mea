@@ -360,7 +360,7 @@ class SearchMoviesView(views.APIView):
                 m_dict['imdbId'] = imdbId
                 m_dict['title'] = m['title']
                 m_dict['year'] = str(m['year'])
-                m_dict['posterUrl'] = ia.get_title(imdbId)['base']['image']['url']
+                # m_dict['posterUrl'] = ia.get_title(imdbId)['base']['image']['url']
                 tosend.append(m_dict)
 
 

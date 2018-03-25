@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import Brand from '../media/brand.png'
-import {Nav, Navbar, NavItem, NavLink, NavbarBrand, Button, Input} from 'reactstrap'
+import {Nav, Navbar, NavItem, NavLink, NavbarBrand, Button, Input, Form} from 'reactstrap'
 import * as Scroll from 'react-scroll'
 import {Link} from 'react-router-dom'
 import '../css/Navbar.css'
@@ -41,15 +41,20 @@ export default class MyNavbar extends Component {
         )
     }
 
+    gotoMovie = () => {
+        let url = '/movie/';
+        url += this.state.results[0].imdbId;
+        this.props.history.push(url);
+    }
+
     handleInputChange = (event) => {
         const target = event.target;
         const value = target.value;
         let that = this;
-        axios.post('/movies/search/', {
+        axios.post('/api/movies/search/', {
             query: value
         })
         .then((response) => {
-            console.log(response);
             that.setState({results: response.data});
         })
         .catch((error) => {
@@ -63,6 +68,7 @@ export default class MyNavbar extends Component {
         if (this.props.search) {
             search = 
                 <div style={{marginLeft: "20px"}}>
+                <Form onSubmit={this.gotoMovie}>
                     <Input list="searches" placeholder="Search..." name="search" onChange={this.handleInputChange} />
                     <datalist id="searches">
                         {this.state.results.map((movie) => {
@@ -71,6 +77,7 @@ export default class MyNavbar extends Component {
                             )
                         })}
                     </datalist>
+                </Form>
                 </div>
         }
 
