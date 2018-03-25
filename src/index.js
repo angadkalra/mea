@@ -19,6 +19,7 @@ ReactDOM.render((
       <Route exact={true} path="/signup" component={SignupForm}/>
       <Route exact={true} path="/login" component={LoginForm} />
       <Route exact={true} path="/profile" component={Profile} />
+      <Route path="/profile/:id" component={Profile} />
       <Route exact={true} path="/onboarding" component={Onboarding} />
       <Route path="/movie/:id" component={MovieBig} />
     </div>

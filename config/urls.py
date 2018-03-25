@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^api/movies/$', MoviesView.as_view()),
     url(r'^api/movies/top$', GetTopMoviesView.as_view()),
     url(r'^api/profile/$', ProfileView.as_view()),
-    url(r'^api/profile/update$', ProfileUpdateView.as_view()),
+    url(r'^api/profile/update/$', ProfileUpdateView.as_view()),
     url(r'^api/profile/(?P<id>\d+)/$', PublicProfileView.as_view()),
     url(r'^welcome', FrontendAppView.as_view()),
     url(r'^api/match/$', FindCuratorsView.as_view()),

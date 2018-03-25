@@ -9,7 +9,11 @@ export default class ProfileSmall extends Component {
     }
 
     goto() {
-        let url = '/movie/' + this.props.movie.imdbId;
+        console.log("")
+        let url = '/profile/'
+        if (this.props.user.id) {
+            url += this.props.user.id;
+        }
         if (this.props.history) {
             this.props.history.push(url);
         }
@@ -18,9 +22,7 @@ export default class ProfileSmall extends Component {
     render() {
         return (
             <div style={this.props.style} onClick={this.goto}>
-                <div className="profileSmall">
-                    <img src={profImg}/>
-                </div>
+                <img className="smallProfPic" src={profImg}/>
             </div>
         )
     }
