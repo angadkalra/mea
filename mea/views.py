@@ -97,9 +97,13 @@ class LogoutView(views.APIView):
     """
     logout the user
     """
-    def get(self, request, *args, **kwargs):
-        logout_user(request)
-        return HttpResponse("Logged-out", status = 201)
+
+    queryset = User.objects.all()
+
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return HttpResponse(status=200)
 
         
 class ProfileView(views.APIView):
