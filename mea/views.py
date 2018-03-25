@@ -244,113 +244,6 @@ class ProfileUpdateView(views.APIView):
             return HttpResponse("Profile updated", status = 201)
         else:
             return HttpResponse("No change made - check format", status = 400)
-
-
-
-class GetTopMoviesView(views.APIView):
-    def get(self, request, *arg, **kwargs):
-
-        ia = Imdb()
-
-        #pass int argument between 1-100 to get a list
-        #of the top movies right now
-        numtop = 50
-        top100 = ia.get_popular_movies()
-        tosend = []
-
-        index = 0
-
-        for m in top100['ranks']:
-            index = index + 1
-            if index > int(numtop):
-                break
-            m_dict = {}
-            imdbId =  m['id'][7:16]
-            m_dict['imdbId'] = str(imdbId)
-            m_dict['title'] = str(m['title'])
-            m_dict['posterUrl'] = str(m['image']['url'])
-            m_dict['year'] = str(m['year'])
-            tosend.append(m_dict)
-
-        try:
-            return HttpResponse(json.dumps(tosend))
-        except ValueError:
-            return HttpResponse("ValueError, int between 1-100 plz", status = 400)
-
-
-class MoviesView(views.APIView):
-    """
-    This view responds with json file containing movie data based on request
-    """
-    
-    def post(self, request, *arg, **kwargs ):
-        content = request.data
-        ia = Imdb()
-
-        try:
-            #pass in imdb movie id to get movie details
-            data = content['movieId']
-            try:
-                movie = ia.get_title(data)
-                return HttpResponse(json.dumps(movie))
-            except ValueError:
-                return HttpResponse("Invalid IMDB id", status = 400)
-        except KeyError:
-            pass
-
-        try:
-            #pass in a keyword to get a list
-            #of movies that match
-            data = content['search']
-            try:
-                searchResult = ia.search_for_title(data)
-                return HttpResponse(json.dumps(searchResult))
-            except ValueError:
-                return HttpResponse("Invalid query, does not contain chars", status = 400)
-        except KeyError:
-            pass
-
-
-        try:
-            #pass int argument between 1-100 to get a list
-            #of the top movies right now
-            numtop = content['top']
-            top100 = ia.get_popular_movies()
-            tosend = []
-
-            index = 0
-
-            for m in top100['ranks']:
-                index = index + 1
-                if index > int(numtop):
-                    break
-                m_dict = {}
-                imdbId =  m['id'][7:16]
-                m_dict['imdbId'] = str(imdbId)
-                m_dict['title'] = str(m['title'])
-                m_dict['posterUrl'] = str(m['image']['url'])
-                m_dict['year'] = str(m['year'])
-                tosend.append(m_dict)
-    
-            try:
-                return HttpResponse(json.dumps(tosend))
-            except ValueError:
-                return HttpResponse("ValueError, int between 1-100 plz", status = 400)
-        except KeyError:
-            pass
-
-
-        try:
-            #pass imdb id to get a list of similar titles
-            data = content['similar']
-            try:
-                similarTitles = ia.get_title_similarities(data)
-                return HttpResponse(json.dumps(similarTitles))
-            except ValueError:
-                return HttpResponse("Invalid IMDB id", status = 400)
-        except KeyError:
-            return HttpResponse('Request Not Understood.', status = 400)
-
           
 class FrontendAppView(View):
     """
@@ -417,6 +310,124 @@ class RecommendMovieView(views.APIView):
         return HttpResponse('Successfully added.', status=201)
 
 
+
+# -------------------------------------------------- MOVIE VIEWS --------------------------------------------------------------#
+
+class GetTopMoviesView(views.APIView):
+    def get(self, request, *arg, **kwargs):
+
+        ia = Imdb()
+
+        #pass int argument between 1-100 to get a list
+        #of the top movies right now
+        numtop = 50
+        top100 = ia.get_popular_movies()
+        tosend = []
+
+        index = 0
+
+        for m in top100['ranks']:
+            index = index + 1
+            if index > int(numtop):
+                break
+            m_dict = {}
+            imdbId =  m['id'][7:16]
+            m_dict['imdbId'] = str(imdbId)
+            m_dict['title'] = str(m['title'])
+            m_dict['posterUrl'] = str(m['image']['url'])
+            m_dict['year'] = str(m['year'])
+            tosend.append(m_dict)
+
+        try:
+            return HttpResponse(json.dumps(tosend))
+        except ValueError:
+            return HttpResponse("ValueError, int between 1-100 plz", status = 400)
+
+
+class SearchMoviesView(views.APIView):
+    def post(self, request, *arg, **kwargs):
+        ia = Imdb()
+
+        query = request.data['query']
+
+        searchResult = ia.search_for_title(query)
+        tosend = []
+
+        for m in searchResult:
+            imdbId = m['imdb_id']
+            if imdbId[0:2] == 'tt':
+                m_dict = {}
+                m_dict['imdbId'] = imdbId
+                m_dict['title'] = m['title']
+                m_dict['year'] = str(m['year'])
+                m_dict['posterUrl'] = ia.get_title(imdbId)['base']['image']['url']
+                tosend.append(m_dict)
+
+
+        return HttpResponse(json.dumps(tosend))
+
+class MoviesView(views.APIView):
+    """
+    This view responds with json file containing movie data based on request
+    """
+    
+    def post(self, request, *arg, **kwargs ):
+        content = request.data
+        ia = Imdb()
+
+        try:
+            #pass in imdb movie id to get movie details
+            data = content['movieId']
+            try:
+                movie = ia.get_title(data)
+                return HttpResponse(json.dumps(movie))
+            except ValueError:
+                return HttpResponse("Invalid IMDB id", status = 400)
+        except KeyError:
+            pass
+
+
+
+
+        try:
+            #pass int argument between 1-100 to get a list
+            #of the top movies right now
+            numtop = content['top']
+            top100 = ia.get_popular_movies()
+            tosend = []
+
+            index = 0
+
+            for m in top100['ranks']:
+                index = index + 1
+                if index > int(numtop):
+                    break
+                m_dict = {}
+                imdbId =  m['id'][7:16]
+                m_dict['imdbId'] = str(imdbId)
+                m_dict['title'] = str(m['title'])
+                m_dict['posterUrl'] = str(m['image']['url'])
+                m_dict['year'] = str(m['year'])
+                tosend.append(m_dict)
+    
+            try:
+                return HttpResponse(json.dumps(tosend))
+            except ValueError:
+                return HttpResponse("ValueError, int between 1-100 plz", status = 400)
+        except KeyError:
+            pass
+
+
+        try:
+            #pass imdb id to get a list of similar titles
+            data = content['similar']
+            try:
+                similarTitles = ia.get_title_similarities(data)
+                return HttpResponse(json.dumps(similarTitles))
+            except ValueError:
+                return HttpResponse("Invalid IMDB id", status = 400)
+        except KeyError:
+            return HttpResponse('Request Not Understood.', status = 400)
 
 #------------------------------Helper Functions-----------------------------#
 
