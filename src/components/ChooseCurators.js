@@ -18,6 +18,10 @@ export default class ChooseCurators extends Component {
 
     componentDidMount() {
         let that = this;
+        let authToken = localStorage.getItem('authToken');
+        if (authToken) {
+            axios.defaults.headers.common['Authorization'] = authToken;
+        }
         axios.get('/api/match/')
         .then((response) => {
             console.log(response);
@@ -35,7 +39,7 @@ export default class ChooseCurators extends Component {
         chosen.push(profileID);
         let index = top.indexOf(profileID);
         top.splice(index,1);
-        this.setState({chosen: chosen, top: top})
+        this.setState({chosen: chosen, top: top});
     }
 
     submit = (event) => {
@@ -59,13 +63,13 @@ export default class ChooseCurators extends Component {
             <Container style={{textAlign: "center"}}>
                 <MyNavbar items={navbarItems} />
                 <Row className="onboard-row">
-                    {this.state.top.map((movie, i) => {
+                    {this.state.top.map((id, i) => {
                         return (
-                            <div className="movie">
-                                <div className="movie-cover" onClick={() => this.choose(movie)}>
+                            <div className="profile">
+                                <div className="profile-cover" onClick={() => this.choose(id)}>
                                     <FaCheck id="check"/>
                                 </div>
-                                <Movie style={{position: "absolute"}} key={i} movie={movie} />
+                                <ProfileSmall style={{position: "absolute"}} key={i} id={id} clickable={false}/>
                             </div>
                         )
                     })}

@@ -27,12 +27,16 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
+        let authToken = localStorage.getItem('authToken');
+        if (authToken) {
+            axios.defaults.headers.common['Authorization'] = authToken;
+        }
         let url = '/api/profile/';
         if (this.props.match.params.id) {
             url += this.props.match.params.id;
         }
-        console.log("profile getting");
-        console.log(url);
+        console.log("Profile calling");
+        console.log(url)
         axios.get(url)
         .then((response) => {
             console.log(response);
@@ -56,8 +60,8 @@ export default class Profile extends Component {
                 <div className="left">
                     <Row>
                         <Col className="my-profile">
-                            <p>{user.username}</p>
-                            <ProfileSmall style={{cursor: "pointer", width: "80%"}} user={user} history={this.props.history} />
+                            {/* <p>{user.username}</p> */}
+                            <ProfileSmall style={{cursor: "pointer", width: "80%"}} id={user.id} history={this.props.history} clickable={true}/>
                             <div className="bio">
                                 <p>{user.bio}</p>
                             </div>

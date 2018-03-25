@@ -18,6 +18,10 @@ export default class Onboarding extends Component {
 
     componentDidMount() {
         let that = this;
+        let authToken = localStorage.getItem('authToken');
+        if (authToken) {
+            axios.defaults.headers.common['Authorization'] = authToken;
+        }
         axios.post('/api/movies/', {
             top: 50
         })
@@ -46,7 +50,7 @@ export default class Onboarding extends Component {
             addMovies: that.state.chosen
         })
         .then((response) => {
-            this.props.history.push('/profile');
+            this.props.history.push('/curators');
         })
         .catch((error) => {
             console.log(error);

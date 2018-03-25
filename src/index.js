@@ -11,6 +11,7 @@ import LoginForm from './components/LoginForm';
 import Profile from './components/Profile';
 import Onboarding from './components/Onboarding';
 import MovieBig from './components/MovieBig';
+import ChooseCurators from './components/ChooseCurators';
 
 ReactDOM.render((
   <Router>
@@ -21,6 +22,7 @@ ReactDOM.render((
       <Route exact={true} path="/profile" component={Profile} />
       <Route path="/profile/:id" component={Profile} />
       <Route exact={true} path="/onboarding" component={Onboarding} />
+      <Route exact={true} path="/curators" component={ChooseCurators} />
       <Route path="/movie/:id" component={MovieBig} />
     </div>
   </Router>

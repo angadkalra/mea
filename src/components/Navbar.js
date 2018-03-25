@@ -18,6 +18,7 @@ export default class MyNavbar extends Component {
     }
 
     logout() {
+        localStorage.setItem('authToken', "")
         axios.get('/api/logout/')
         .then((response) => {
             this.props.history.push('/login')

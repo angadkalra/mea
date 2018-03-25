@@ -62,6 +62,8 @@ export default class SignupForm extends Component {
       
       .then((response) => {
         console.log(response);
+        let auth = 'Token ' + response.data.token;
+        axios.defaults.headers.common['Authorization'] = auth;
         that.props.history.push('/onboarding');
       })
       
