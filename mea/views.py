@@ -338,8 +338,8 @@ class FindCuratorsView(views.APIView):
         data = {}
 
         if current_user.is_authenticated:
-            matches = SimilarUsers.find(current_user)
-            data['profileIDs'] = matches
+            curators = SimilarUsers.find(current_user)
+            data['curators'] = curators
             return HttpResponse(json.dumps(data), status = 200)
         else:
             return HttpResponse('Unauthorized user.', status = 401)
