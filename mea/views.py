@@ -244,8 +244,74 @@ class ProfileUpdateView(views.APIView):
             return HttpResponse("Profile updated", status = 201)
         else:
             return HttpResponse("No change made - check format", status = 400)
+          
+class FrontendAppView(View):
+    """
+    Serves the compiled frontend entry point (only works if you have run `yarn
+    run build`).
+    """
+
+    def get(self, request):
+        try:
+            with open(os.path.join('build', 'index.html')) as f:
+                return HttpResponse(f.read())
+        except FileNotFoundError:
+            logging.exception('Production build of app not found')
+            return HttpResponse(
+                """
+                This URL is only used when you have built the production
+                version of the app. Visit http://localhost:3000/ instead, or
+                run `yarn run build` to test the production version.
+                """,
+                status=501,
+            )
 
 
+class FindCuratorsView(views.APIView):
+
+    # Given userID, return similar users. 
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+        data = {}
+
+        if current_user.is_authenticated:
+            curators = SimilarUsers.find(current_user)
+            data['curators'] = curators
+            return HttpResponse(json.dumps(data), status = 200)
+        else:
+            return HttpResponse('Unauthorized user.', status = 401)
+
+
+class RecommendMovieView(views.APIView):
+
+    # Recommends movies to followers.
+    # Input: user ids and movie id 
+
+    def post(self, request, *arg, **kwargs):
+        content = request.data
+        
+        try:
+            imdbID = content['imdbID']
+            profileID = content['profileID']
+        except KeyError:
+            return HttpResponse('Data not available.', status=400)
+
+        if not Movie.objects.filter(imdbId=imdbID).exists():
+            AddMovieToDB(imdbID)
+
+        movie = Movie.objects.get(imdbId=imdbID)
+            
+        # Go through user IDs and add movieID to recommended_movies field
+        for pid in profileID:
+            profile = Profile.objects.get(id=pid)
+            profile.recommended_movies.add(movie)
+
+        return HttpResponse('Successfully added.', status=201)
+
+
+
+# -------------------------------------------------- MOVIE VIEWS --------------------------------------------------------------#
 
 class GetTopMoviesView(views.APIView):
     def get(self, request, *arg, **kwargs):
@@ -300,7 +366,6 @@ class SearchMoviesView(views.APIView):
 
         return HttpResponse(json.dumps(tosend))
 
-
 class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request
@@ -321,17 +386,7 @@ class MoviesView(views.APIView):
         except KeyError:
             pass
 
-        try:
-            #pass in a keyword to get a list
-            #of movies that match
-            data = content['search']
-            try:
-                searchResult = ia.search_for_title(data)
-                return HttpResponse(json.dumps(searchResult))
-            except ValueError:
-                return HttpResponse("Invalid query, does not contain chars", status = 400)
-        except KeyError:
-            pass
+
 
 
         try:
@@ -373,73 +428,6 @@ class MoviesView(views.APIView):
                 return HttpResponse("Invalid IMDB id", status = 400)
         except KeyError:
             return HttpResponse('Request Not Understood.', status = 400)
-
-          
-class FrontendAppView(View):
-    """
-    Serves the compiled frontend entry point (only works if you have run `yarn
-    run build`).
-    """
-
-    def get(self, request):
-        try:
-            with open(os.path.join('build', 'index.html')) as f:
-                return HttpResponse(f.read())
-        except FileNotFoundError:
-            logging.exception('Production build of app not found')
-            return HttpResponse(
-                """
-                This URL is only used when you have built the production
-                version of the app. Visit http://localhost:3000/ instead, or
-                run `yarn run build` to test the production version.
-                """,
-                status=501,
-            )
-
-
-class FindCuratorsView(views.APIView):
-
-    # Given userID, return similar users. 
-
-    def get(self, request, *args, **kwargs):
-        current_user = request.user
-        data = {}
-
-        if current_user.is_authenticated:
-            matches = SimilarUsers.find(current_user)
-            data['profileIDs'] = matches
-            return HttpResponse(json.dumps(data), status = 200)
-        else:
-            return HttpResponse('Unauthorized user.', status = 401)
-
-
-class RecommendMovieView(views.APIView):
-
-    # Recommends movies to followers.
-    # Input: user ids and movie id 
-
-    def post(self, request, *arg, **kwargs):
-        content = request.data
-        
-        try:
-            imdbID = content['imdbID']
-            profileID = content['profileID']
-        except KeyError:
-            return HttpResponse('Data not available.', status=400)
-
-        if not Movie.objects.filter(imdbId=imdbID).exists():
-            AddMovieToDB(imdbID)
-
-        movie = Movie.objects.get(imdbId=imdbID)
-            
-        # Go through user IDs and add movieID to recommended_movies field
-        for pid in profileID:
-            profile = Profile.objects.get(id=pid)
-            profile.recommended_movies.add(movie)
-
-        return HttpResponse('Successfully added.', status=201)
-
-
 
 #------------------------------Helper Functions-----------------------------#
 
