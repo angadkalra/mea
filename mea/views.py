@@ -12,10 +12,19 @@ from django.template import RequestContext
 #user creation and login related tools
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
 
 from imdbpie import Imdb
+
+# class GenerateTokensView(views.APIView):
+
+#     def post(self, request, *args, **kwargs):
+#         for user in User.objects.all():
+#             Token.objects.get_or_create(user=user)
+
+#         return HttpResponse("Done.", status = 200)
 
 class SignUpView(views.APIView):
 
@@ -62,42 +71,26 @@ class SignUpView2(views.APIView):
             user.save()
         
         except Exception as e:
-            # print(e.message)
-            # print(e.type)
             print(e)
             return HttpResponse("User alredy exists.", status=401)
 
-        return HttpResponse("User Created!", status = 202)
-
-
-class LoginView(views.APIView):
-    """
-    takes either user-name or e-mail and check if it matches with the password
-    """
-    def post(self, request, *args, **kwargs):
-        content = request.data
-
-        try:
-            psw = content['password']
-            usn = content['username']
-        except KeyError:
-            return HttpResponse('Error in information format', status = 400)
-
-        user = authenticate(username = usn, password = psw)
-        if user is not None:
-            login_user(request, user)
-            return HttpResponse("Success", status = 202)
-        else:
-            return HttpResponse("Access Denied", status = 401)
+        response = HttpResponse()
+        response['token'] = str(user.auth_token)
+        response.status_code = 201
+        
+        return response
 
 
 class LogoutView(views.APIView):
     """
     logout the user
     """
-    def get(self, request, *args, **kwargs):
-        logout_user(request)
-        return HttpResponse("Logged-out", status = 201)
+
+    def get(self, request, format=None):
+        
+        request.user.auth_token.delete()
+
+        return HttpResponse(status=200)
 
         
 class ProfileView(views.APIView):
@@ -107,6 +100,8 @@ class ProfileView(views.APIView):
 
     def get(self, request, *arg, **kwargs):
         current_user = request.user
+
+        print(current_user)
 
         if current_user.is_authenticated:
             data = {}
