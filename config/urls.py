@@ -7,8 +7,8 @@ from rest_framework.schemas import get_schema_view
 
 from django.conf.urls.static import static
 from mea.views import SignUpView, FrontendAppView, MoviesView, SignUpView2, LoginView
-from mea.views import LogoutView, ProfileView, ProfileUpdateView, RecommendCuratorsView, PublicProfileView
-from mea.views import GetTopMoviesView
+from mea.views import LogoutView, ProfileView, ProfileUpdateView, FindCuratorsView, PublicProfileView
+from mea.views import GetTopMoviesView, RecommendMovieView
 
 
 # from rest_framework_simplejwt.views import (
