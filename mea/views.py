@@ -278,6 +278,29 @@ class GetTopMoviesView(views.APIView):
             return HttpResponse("ValueError, int between 1-100 plz", status = 400)
 
 
+class SearchMoviesView(views.APIView):
+    def post(self, request, *arg, **kwargs):
+        ia = Imdb()
+
+        query = request.data['query']
+
+        searchResult = ia.search_for_title(query)
+        tosend = []
+
+        for m in searchResult:
+            imdbId = m['imdb_id']
+            if imdbId[0:2] == 'tt':
+                m_dict = {}
+                m_dict['imdbId'] = imdbId
+                m_dict['title'] = m['title']
+                m_dict['year'] = str(m['year'])
+                m_dict['posterUrl'] = ia.get_title(imdbId)['base']['image']['url']
+                tosend.append(m_dict)
+
+
+        return HttpResponse(json.dumps(tosend))
+
+
 class MoviesView(views.APIView):
     """
     This view responds with json file containing movie data based on request

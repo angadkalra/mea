@@ -9,7 +9,7 @@ from rest_framework.authtoken import views
 from django.conf.urls.static import static
 from mea.views import SignUpView, FrontendAppView, MoviesView, SignUpView2
 from mea.views import LogoutView, ProfileView, ProfileUpdateView, FindCuratorsView, PublicProfileView
-from mea.views import GetTopMoviesView, RecommendMovieView
+from mea.views import GetTopMoviesView, RecommendMovieView, SearchMoviesView
 
 urlpatterns = [
     url(r'^$', FrontendAppView.as_view()),
@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^api/logout/$', LogoutView.as_view()),
     url(r'^api/movies/$', MoviesView.as_view()),
     url(r'^api/movies/top/$', GetTopMoviesView.as_view()),
+    url(r'^api/movies/search/$', SearchMoviesView.as_view()),
     url(r'^api/profile/$', ProfileView.as_view()),
     url(r'^api/profile/update/$', ProfileUpdateView.as_view()),
     url(r'^api/profile/(?P<id>\d+)/$', PublicProfileView.as_view()),
