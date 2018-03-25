@@ -28,9 +28,6 @@ class EchoView(views.APIView):
 
 urlpatterns = [
     url(r'^$', FrontendAppView.as_view()),
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
-    url(r'^admin/', admin.site.urls),
     url(r'^api/$', get_schema_view()),
     url(r'^api/signup/$', SignUpView.as_view()),
     url(r'^api/signup2/$', SignUpView2.as_view()),

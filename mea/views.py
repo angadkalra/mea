@@ -82,8 +82,9 @@ class LoginView(views.APIView):
             return HttpResponse('Error in information format', status = 400)
 
         user = authenticate(username = usn, password = psw)
-        login_user(request, user)
+
         if user is not None:
+            login_user(request, user)
             return HttpResponse("Success", status = 201)
         else:
             return HttpResponse("Access Denied", status = 401)
