@@ -1,22 +1,16 @@
 import React, {Component} from 'react'
+import axios from 'axios'
 import '../css/Landing.css'
-import Brand from '../media/brand.png'
 import Hero from '../media/hero6.jpg'
 import About from '../media/about.png'
 import Movies from '../media/Movies.png'
 import Discover from '../media/Discover.png'
 import Curator from '../media/Curator.png'
-import Link from 'react-router-redux-dom-link'
 import * as Scroll from 'react-scroll'
+import MyNavbar from '../components/Navbar'
 
 import {
     Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -54,6 +48,29 @@ const items = [
         caption: ''
     }
 ];
+
+const navbarItems = [
+    {
+        scrollLink: true,
+        to: "about",
+        name: "About"
+    },
+    {
+        scrollLink: true,
+        to: "example",
+        name: "Example"
+    },
+    {
+        scrollLink: false,
+        to: "/signup",
+        name: "Signup"
+    },
+    {
+        scrollLink: false,
+        to: "/login",
+        name: "Login"
+    }
+]
       
 export default class Landing extends Component {
     constructor(props) {
@@ -62,7 +79,9 @@ export default class Landing extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             email: "",
-            activeIndex: 0
+            activeIndex: 0,
+            submited: false,
+            loggedOut: false
         };
 
         this.next = this.next.bind(this);
@@ -70,6 +89,20 @@ export default class Landing extends Component {
         this.goToIndex = this.goToIndex.bind(this);
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
+    }
+
+    componentDidMount() {
+        // let that = this;
+        // if (!this.state.loggedOut) {
+        //     axios.get('/api/logout')
+        //     .then((response) => {
+        //         console.log("Logged out");
+        //         that.setState({loggedOut: true});
+        //     })
+        //     .catch((err) => {
+        //         console.log("There was an error logging out");
+        //     })
+        // }
     }
 
     onExiting() {
@@ -116,11 +149,25 @@ export default class Landing extends Component {
 
     onSubmit = (event) => {
         event.preventDefault()
-        this.props.onEmailSubmit(this.state.email)
+        axios.post('/api/signup/', {
+            email: this.state.email
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        this.setState({submited: true});
     }
 
     render() {
         const { activeIndex } = this.state;
+
+        let submitText = "Keep me updated!";
+        if (this.state.submited) {
+            submitText = "Submited, thanks!";
+        }
 
         const slides = items.map((item) => {
             return (
@@ -139,21 +186,7 @@ export default class Landing extends Component {
         return (
             <Container fluid={true}>
 
-            <Navbar color="faded" light fixed="top" className="navbar" style={{paddingLeft: "10%"}}>
-                <NavbarBrand href="/"><img style={{height: "40px"}} src={Brand}/></NavbarBrand>
-                <Nav className="ml-auto">
-                    <NavItem className="navLink">
-                        <NavLink>
-                            <ScrollLink to="about" smooth={true} activeClass="activeNavLink"> About </ScrollLink>
-                        </NavLink>
-                    </NavItem>
-                    <NavItem className="navLink">
-                        <NavLink>
-                        <ScrollLink to="example" smooth={true} activeClass="activeNavLink"> Example </ScrollLink>
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-            </Navbar>
+            <MyNavbar items={navbarItems}/>
 
             <Row className="landingRow">
                 <Col style={{paddingLeft: "0px", paddingRight: "0px"}}>
@@ -167,7 +200,7 @@ export default class Landing extends Component {
                                     <Input name="email" type="email" placeholder="email" onChange={this.handleInputChange} />
                                     <InputGroupAddon>
                                     <Button type="submit" color="primary" style={{borderTopLeftRadius: "0px", borderBottomLeftRadius: 
-                                    "0px"}}>Keep me updated</Button>
+                                    "0px"}}>{submitText}</Button>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </Form>
@@ -181,8 +214,8 @@ export default class Landing extends Component {
             <Row className="landingRow">
                 <Col style={{paddingLeft: "0px", paddingRight: "0px"}}>
                     <div id="about">
-                        <div className="left">
-                            <div className="centerHor centerVert" style={{top: "20%", width: "60%"}}>
+                        <div className="left" id="aboutText">
+                            <div className="centerHor centerVert" style={{top: "10%", width: "60%"}}>
                                 <h2>What do we do?</h2>
                                 <h4 className="paragraph">Human recommendations</h4>
                                 <p>Follow friends and curators with similar taste for great new content recommendations.</p>
@@ -192,8 +225,8 @@ export default class Landing extends Component {
                                 <p>All the books, podcasts, movies, and TV shows you've watched and been recommended, available at your convenience</p>
                             </div>
                         </div>
-                        <div className="right">
-                            <div className="centerHor centerVert" style={{top:"35%", width: "75%"}}>
+                        <div className="right" id="aboutPics">
+                            <div className="centerHor centerVert" style={{top:"20%", width: "75%"}}>
                                 <img style={{height: "100%", width: "100%"}} src={About}/>
                             </div>
                         </div>
