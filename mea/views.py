@@ -12,6 +12,7 @@ from django.template import RequestContext
 #user creation and login related tools
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
 
@@ -81,11 +82,12 @@ class LoginView(views.APIView):
             psw = content['password']
             usn = content['username']
         except KeyError:
-            return HttpResponse('Error in information format', status = 400)
+            return HttpResponse('Missing login information.', status = 401)
 
-        user = authenticate(username = usn, password = psw)
-        login_user(request, user)
+        user = authenticate(request, username = usn, password = psw)
         if user is not None:
+            login_user(request, user)
+
             return HttpResponse("Success", status = 202)
         else:
             return HttpResponse("Access Denied", status = 401)
