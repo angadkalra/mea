@@ -1,0 +1,5 @@
+{"username":"Kelly", "password":"Dickman"}
+
+{"imdbID":"tt1413492", "profileID":[195, 77, 95, 287, 307]}
+
+{"addMovies": [{"posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BNTEzMjk3NzkxMV5BMl5BanBnXkFtZTgwNjY2NDczNDM@._V1_.jpg", "genres": "['Action', 'Drama', 'History', 'War']", "title": "12 Strong", "year": "2018", "imdbId": "tt1413492"}]}
