@@ -31,6 +31,8 @@ export default class Profile extends Component {
         if (this.props.match.params.id) {
             url += this.props.match.params.id;
         }
+        console.log("profile getting");
+        console.log(url);
         axios.get(url)
         .then((response) => {
             console.log(response);
@@ -55,7 +57,7 @@ export default class Profile extends Component {
                     <Row>
                         <Col className="my-profile">
                             <p>{user.username}</p>
-                            <ProfileSmall style={{cursor: "pointer", width: "80%"}} user={user} />
+                            <ProfileSmall style={{cursor: "pointer", width: "80%"}} user={user} history={this.props.history} />
                             <div className="bio">
                                 <p>{user.bio}</p>
                             </div>

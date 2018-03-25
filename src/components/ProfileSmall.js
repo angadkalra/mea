@@ -9,7 +9,6 @@ export default class ProfileSmall extends Component {
     }
 
     goto() {
-        console.log("")
         let url = '/profile/'
         if (this.props.user.id) {
             url += this.props.user.id;
