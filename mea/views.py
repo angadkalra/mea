@@ -12,6 +12,7 @@ from django.template import RequestContext
 #user creation and login related tools
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
 
@@ -81,11 +82,12 @@ class LoginView(views.APIView):
             psw = content['password']
             usn = content['username']
         except KeyError:
-            return HttpResponse('Error in information format', status = 400)
+            return HttpResponse('Missing login information.', status = 401)
 
-        user = authenticate(username = usn, password = psw)
-        login_user(request, user)
+        user = authenticate(request, username = usn, password = psw)
         if user is not None:
+            login_user(request, user)
+
             return HttpResponse("Success", status = 202)
         else:
             return HttpResponse("Access Denied", status = 401)
@@ -95,9 +97,13 @@ class LogoutView(views.APIView):
     """
     logout the user
     """
-    def get(self, request, *args, **kwargs):
-        logout_user(request)
-        return HttpResponse("Logged-out", status = 201)
+
+    queryset = User.objects.all()
+
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return HttpResponse(status=200)
 
         
 class ProfileView(views.APIView):
