@@ -84,8 +84,8 @@ class LoginView(views.APIView):
             return HttpResponse('Error in information format', status = 400)
 
         user = authenticate(username = usn, password = psw)
-        login_user(request, user)
         if user is not None:
+            login_user(request, user)
             return HttpResponse("Success", status = 202)
         else:
             return HttpResponse("Access Denied", status = 401)
@@ -152,7 +152,7 @@ class PublicProfileView(views.APIView):
             data['username'] = current_profile.user.username
             data['id'] = current_profile.id
             data['bio'] = current_profile.bio
-            data['movies'] = {}
+            data['movies'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_profile.movies.all()
@@ -168,7 +168,7 @@ class PublicProfileView(views.APIView):
                 m_dict['posterUrl'] = m.poster
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
-                data['movies'][str(index)] = m_dict
+                data['movies'].append(m_dict)
 
 
             #data['followers'] = current_profile.followerz.all()

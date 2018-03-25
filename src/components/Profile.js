@@ -51,7 +51,7 @@ export default class Profile extends Component {
 
         return (
             <Container>
-                <MyNavbar history={this.props.history} items={navbarItems} />
+                <MyNavbar history={this.props.history} items={navbarItems} search={true} />
                 
                 <div className="left">
                     <Row>
