@@ -10,8 +10,8 @@ from rest_framework.schemas import get_schema_view
 
 from django.conf.urls.static import static
 from mea.views import SignUpView, FrontendAppView, MoviesView, SignUpView2, LoginView
-from mea.views import LogoutView, ProfileView, ProfileUpdateView, RecommendCuratorsView, PublicProfileView
-from mea.views import GetTopMoviesView
+from mea.views import LogoutView, ProfileView, ProfileUpdateView, FindCuratorsView, PublicProfileView
+from mea.views import GetTopMoviesView, RecommendMovieView, SearchMoviesView
 
 
 # from rest_framework_simplejwt.views import (
@@ -39,7 +39,8 @@ urlpatterns = [
     url(r'^api/login/$', LoginView.as_view()),
     url(r'^api/logout/$', LogoutView.as_view()),
     url(r'^api/movies/$', MoviesView.as_view()),
-    url(r'^api/movies/top$', GetTopMoviesView.as_view()),
+    url(r'^api/movies/top/$', GetTopMoviesView.as_view()),
+    url(r'^api/movies/search/$', SearchMoviesView.as_view()),
     url(r'^api/profile/$', ProfileView.as_view()),
     url(r'^api/profile/update$', ProfileUpdateView.as_view()),
     url(r'^api/profile/(?P<id>\d+)/$', PublicProfileView.as_view()),
