@@ -53,7 +53,8 @@ class SimilarUsers():
 			
 			obj['firstName'] = profile.user.first_name
 			obj['lastName'] = profile.user.last_name
-			obj['movies'] = list(map(lambda x: x.imdbId, profile.movies.all()))
+			obj['id'] = profile.user.id
+			obj['username'] = profile.user.username
 
 			data.append(obj)
 

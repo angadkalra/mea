@@ -61,10 +61,10 @@ export default class Profile extends Component {
                     <Row>
                         <Col className="my-profile">
                             {/* <p>{user.username}</p> */}
-                            <ProfileSmall style={{cursor: "pointer", width: "80%"}} id={user.id} history={this.props.history} clickable={true}/>
-                            <div className="bio">
+                            <ProfileSmall style={{cursor: "pointer", width: "80%"}} user={user} history={this.props.history} clickable={true}/>
+                            {/* <div className="bio">
                                 <p>{user.bio}</p>
-                            </div>
+                            </div> */}
                         </Col>
                     </Row>
 
