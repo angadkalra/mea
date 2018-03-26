@@ -72,7 +72,7 @@ class SignUpView2(views.APIView):
         
         except Exception as e:
             print(e)
-            return HttpResponse("User alredy exists.", status=401)
+            return HttpResponse("User alredy exists.", status=200)
 
         response = HttpResponse()
         response['token'] = str(user.auth_token)
