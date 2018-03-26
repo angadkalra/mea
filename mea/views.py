@@ -109,6 +109,9 @@ class ProfileView(views.APIView):
             data['id'] = current_user.profile.id
             data['bio'] = current_user.profile.bio
             data['movies'] = []
+            data['followers'] = []
+            data['followings'] = []
+            data['recommendations'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_user.profile.movies.all()
@@ -123,6 +126,36 @@ class ProfileView(views.APIView):
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
                 data['movies'].append(m_dict)
+
+
+            user_followers = current_user.profile.followers.all()
+            user_followings = current_user.profile.followings.all()
+
+            for f in user_followers:
+                f_dict = {}
+                f_dict['username'] = f.user.username
+                f_dict['id'] = f.id
+                data['followers'].append(f_dict)
+
+            for f in user_followings:
+                f_dict = {}
+                f_dict['username'] = f.user.username
+                f_dict['id'] = f.id
+                data['followers'].append(f_dict)
+
+
+
+            user_recommended_movies = current_user.profile.recommended_movies.all()
+
+            for m in user_recommended_movies:
+                m_dict = {}
+                m_dict['imdbId'] = m.imdbId
+                m_dict['title'] = m.title
+                m_dict['posterUrl'] = m.poster
+                m_dict['year'] = m.year
+                m_dict['genres'] = m.genre
+                data['recommendations'].append(m_dict)
+
 
             return HttpResponse(json.dumps(data))
 
@@ -148,6 +181,8 @@ class PublicProfileView(views.APIView):
             data['id'] = current_profile.id
             data['bio'] = current_profile.bio
             data['movies'] = []
+            data['followers'] = []
+            data['followings'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_profile.movies.all()
@@ -156,7 +191,6 @@ class PublicProfileView(views.APIView):
             index = 0
 
             for m in user_movies:
-                index = index + 1
                 m_dict = {}
                 m_dict['imdbId'] = m.imdbId
                 m_dict['title'] = m.title
@@ -165,10 +199,20 @@ class PublicProfileView(views.APIView):
                 m_dict['genres'] = m.genre
                 data['movies'].append(m_dict)
 
+            user_followers = current_profile.followers.all()
+            user_followings = current_profile.followings.all()
 
-            #data['followers'] = current_profile.followerz.all()
-           # data['followings'] = current_profile.followingz.all()
-           #TODO
+            for f in user_followers:
+                f_dict = {}
+                f_dict['username'] = f.user.username
+                f_dict['id'] = f.id
+                data['followers'].append(f_dict)
+
+            for f in user_followings:
+                f_dict = {}
+                f_dict['username'] = f.user.username
+                f_dict['id'] = f.id
+                data['followers'].append(f_dict)
 
             return HttpResponse(json.dumps(data))
         else:
@@ -218,10 +262,14 @@ class ProfileUpdateView(views.APIView):
                 return HttpResponse("Invalid movie objects.", status = 400)
 
             try:
-                newFollower = content['add_follower']
-                if Profile.objects.filter(id = newFollower).exists():
-                    pass
-                    #TODO
+                followsToAdd = content['addFollowings']
+                for f in followsToAdd:
+                    print(f)
+                    if Profile.objects.filter(id = f).exists():
+                        profile_f = Profile.objects.get(id = f)
+                        current_user.profile.followings.add(profile_f)
+                        profile_f.followers.add(current_user.profile)
+                        changeMade = True
             except KeyError:
                 pass
             except ValueError:
