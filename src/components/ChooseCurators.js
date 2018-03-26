@@ -36,7 +36,7 @@ export default class ChooseCurators extends Component {
         console.log(user);
         let chosen = this.state.chosen;
         let top = this.state.top;
-        chosen.push(user);
+        chosen.push(user.id);
         let index = top.indexOf(user);
         top.splice(index,1);
         this.setState({chosen: chosen, top: top});
@@ -45,7 +45,7 @@ export default class ChooseCurators extends Component {
     submit = (event) => {
         let that = this;
         axios.post('/api/profile/update/', {
-            add_follower: that.state.chosen
+            addFollowings: that.state.chosen
         })
         .then((response) => {
             this.props.history.push('/profile');
@@ -69,7 +69,7 @@ export default class ChooseCurators extends Component {
                                 <div className="profile-cover" onClick={() => this.choose(user)}>
                                     <FaCheck id="check"/>
                                 </div>
-                                <ProfileSmall style={{position: "absolute"}} key={i} user={user} clickable={false}/>
+                                <ProfileSmall key={i} user={user} clickable={false}/>
                             </div>
                         )
                     })}

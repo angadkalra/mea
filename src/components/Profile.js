@@ -11,6 +11,11 @@ import '../css/Profile.css'
 const navbarItems = [
     {
         logout: true
+    },
+    {
+        scrollLink: false,
+        to: "/profile",
+        name: "Profile"
     }
 ]
 
@@ -21,7 +26,10 @@ export default class Profile extends Component {
             user: {
                 movies: [],
                 username: "",
-                bio: ""
+                bio: "",
+                followers: [],
+                followings: [],
+                recommendations: []
             }
         }
     }
@@ -78,7 +86,6 @@ export default class Profile extends Component {
                 
                 <div className="right">
                     <h4> Movies </h4>
-
                     <Row className="profile-row">
                         {user.movies.map((movie) => {
                             return (
@@ -87,12 +94,34 @@ export default class Profile extends Component {
                         })}
                     </Row>  
 
-                    <h4>Recommended</h4>
+                    <h4>Followers</h4>
                     <Row className="profile-row">
-                        {user.movies.map((movie) => {
+                        {user.followers.map((f) => {
                             return (
                                 <div>
-                                    <Movie style={{marginTop: "10px", cursor: "pointer"}} movie={movie} cover={cover} history={this.props.history}/>
+                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer"}} user={f} history={this.props.history} clickable={true}/>
+                                </div>
+                            )
+                        })}
+                    </Row>
+
+                    <h4>Recommended</h4>
+                    <Row className="profile-row">
+                        {user.recommendations.map((movie) => {
+                            return (
+                                <div>
+                                    <Movie style={{cursor: "pointer"}} movie={movie} cover={cover} history={this.props.history}/>
+                                </div>
+                            )
+                        })}
+                    </Row>
+
+                    <h4>Following</h4>
+                    <Row className="profile-row">
+                        {user.followings.map((f) => {
+                            return (
+                                <div>
+                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer"}} user={f} history={this.props.history} clickable={true}/>
                                 </div>
                             )
                         })}

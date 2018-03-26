@@ -141,7 +141,7 @@ class ProfileView(views.APIView):
                 f_dict = {}
                 f_dict['username'] = f.user.username
                 f_dict['id'] = f.id
-                data['followers'].append(f_dict)
+                data['followings'].append(f_dict)
 
 
 
@@ -183,6 +183,7 @@ class PublicProfileView(views.APIView):
             data['movies'] = []
             data['followers'] = []
             data['followings'] = []
+            data['recommendations'] = []
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_profile.movies.all()
@@ -212,7 +213,7 @@ class PublicProfileView(views.APIView):
                 f_dict = {}
                 f_dict['username'] = f.user.username
                 f_dict['id'] = f.id
-                data['followers'].append(f_dict)
+                data['followings'].append(f_dict)
 
             return HttpResponse(json.dumps(data))
         else:
@@ -264,7 +265,6 @@ class ProfileUpdateView(views.APIView):
             try:
                 followsToAdd = content['addFollowings']
                 for f in followsToAdd:
-                    print(f)
                     if Profile.objects.filter(id = f).exists():
                         profile_f = Profile.objects.get(id = f)
                         current_user.profile.followings.add(profile_f)
