@@ -28,6 +28,7 @@ class Profile(models.Model):
 	bio = models.TextField(max_length = 300, blank = True)
 	profilePicture = models.ImageField(upload_to = None, height_field = None, width_field = None, max_length = 200)
 	fake = models.BooleanField(default = False)
+	pic = models.TextField(max_length = None, blank = True)
 
 	followers = models.ManyToManyField("Profile", blank=True, related_name="followerz")
 	followings = models.ManyToManyField("Profile", blank=True, related_name="followingz")
