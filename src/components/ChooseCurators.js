@@ -25,19 +25,19 @@ export default class ChooseCurators extends Component {
         axios.get('/api/match/')
         .then((response) => {
             console.log(response);
-            that.setState({top: response.data.profileIDs});
+            that.setState({top: response.data.curators});
         })
         .catch((error) => {
             console.log("Couldnt get top");
         })
     }
 
-    choose(profileID) {
-        console.log(profileID);
+    choose(user) {
+        console.log(user);
         let chosen = this.state.chosen;
         let top = this.state.top;
-        chosen.push(profileID);
-        let index = top.indexOf(profileID);
+        chosen.push(user);
+        let index = top.indexOf(user);
         top.splice(index,1);
         this.setState({chosen: chosen, top: top});
     }
@@ -45,7 +45,7 @@ export default class ChooseCurators extends Component {
     submit = (event) => {
         let that = this;
         axios.post('/api/profile/update/', {
-            addMovies: that.state.chosen
+            add_follower: that.state.chosen
         })
         .then((response) => {
             this.props.history.push('/profile');
@@ -63,13 +63,13 @@ export default class ChooseCurators extends Component {
             <Container style={{textAlign: "center"}}>
                 <MyNavbar items={navbarItems} />
                 <Row className="onboard-row">
-                    {this.state.top.map((id, i) => {
+                    {this.state.top.map((user, i) => {
                         return (
                             <div className="profile">
-                                <div className="profile-cover" onClick={() => this.choose(id)}>
+                                <div className="profile-cover" onClick={() => this.choose(user)}>
                                     <FaCheck id="check"/>
                                 </div>
-                                <ProfileSmall style={{position: "absolute"}} key={i} id={id} clickable={false}/>
+                                <ProfileSmall style={{position: "absolute"}} key={i} user={user} clickable={false}/>
                             </div>
                         )
                     })}

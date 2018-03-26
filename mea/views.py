@@ -218,10 +218,11 @@ class ProfileUpdateView(views.APIView):
                 return HttpResponse("Invalid movie objects.", status = 400)
 
             try:
-                newFollower = content['add_follower']
-                if Profile.objects.filter(id = newFollower).exists():
-                    pass
-                    #TODO
+                newFollowers = content['add_follower']
+                for u in newFollowers:
+                    if Profile.objects.filter(id = newFollower).exists():
+                        pass
+                        #TODO
             except KeyError:
                 pass
             except ValueError:
