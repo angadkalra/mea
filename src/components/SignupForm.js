@@ -95,7 +95,7 @@ export default class SignupForm extends Component {
         <Row> 
           <Col style={{paddingLeft: "20%", paddingRight: "20%", paddingTop: "10vh"}} className="main-signup">
               <Form onSubmit={this.onSubmit}>
-                <h1>Singup</h1>
+                <h1>Signup</h1>
                 <FormGroup>
                   <Label for="email">Email</Label>
                   <Input type="email" name="email" id="Email" onChange={this.handleInputChange} />
