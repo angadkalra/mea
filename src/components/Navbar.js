@@ -42,8 +42,10 @@ export default class MyNavbar extends Component {
     }
 
     gotoMovie = () => {
+        console.log("Going to");
         let url = '/movie/';
         url += this.state.results[0].imdbId;
+        console.log(url);
         this.props.history.push(url);
     }
 

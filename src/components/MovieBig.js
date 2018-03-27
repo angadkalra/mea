@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import {Row, Col, Container} from 'reactstrap'
+import {Row, Col, Container, Button} from 'reactstrap'
 import '../css/MovieBig.css'
 import MyNavbar from '../components/Navbar'
 import ProfileSmall from '../components/ProfileSmall'
@@ -11,6 +11,7 @@ export default class MovieBig extends Component {
         this.state = {
             friends: [],
             movie: {
+                imdbId: "",
                 base: {
                     id: "",
                     image: {
@@ -30,8 +31,18 @@ export default class MovieBig extends Component {
                         text: ""
                     }
                 }
-            }
+            },
+            added: false
         }
+    }
+
+    movieAdded = (movies ,id) => {
+        console.log(id)
+        for (let m of movies) {
+            console.log(m.imdbId);
+            if (m.imdbId == id) return true;
+        }
+        return false;
     }
 
     componentWillMount() {
@@ -55,7 +66,10 @@ export default class MovieBig extends Component {
                 let friends = that.state.friends;
                 friends = friends.concat(data.followers);
                 friends = friends.concat(data.followings);
-                that.setState({friends: friends, movie: movie});
+                let movId = movie.base.id.substr(7);
+                movId = id.substr(0, id.length);
+                let added = this.movieAdded(data.movies, movId);
+                that.setState({friends: friends, movie: movie, added: added});
             })
             .catch((error) => {
                 console.log(error);
@@ -85,6 +99,25 @@ export default class MovieBig extends Component {
         })
     }
 
+    addMovie = () => {
+        let that = this;
+        let id = this.state.movie.base.id.substr(7);
+        id = id.substr(0, id.length - 1);
+        axios.post('/api/profile/update/', {
+            addMovies: [
+                {
+                    imdbId: id
+                }
+            ]
+        })
+        .then((response) => {
+            that.setState({added: true})
+        })
+        .catch((error) => {
+
+        })
+    }
+
     render() {
         let movie = this.state.movie;
         let navItem = [
@@ -94,13 +127,15 @@ export default class MovieBig extends Component {
                 name: "Profile"
             }
         ]
+
+        let text = this.state.added ? "Added!" : "Add Movie"
         
         console.log(movie);
         console.log(this.state.friends);
 
         return (
             <Container>
-                <MyNavbar items={navItem}/>
+                <MyNavbar items={navItem} search={true} history={this.props.history}/>
                 <Row style={{marginTop: "100px"}}>
                     <Col id="moviePoster" md="3">
                         <img className="poster" src={movie.base.image.url}/>
@@ -113,6 +148,7 @@ export default class MovieBig extends Component {
                             MetaScore: {movie.metacriticScore.metaScore}/100
                         </p>
                         <p>Plot: {movie.plot.outline.text}</p>
+                        <Button onClick={this.addMovie}>{text}</Button>
                     </Col>
                 </Row>
                 <h4 style={{marginTop: "20px"}}>Recommend to</h4>
