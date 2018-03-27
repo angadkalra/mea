@@ -75,13 +75,6 @@ export default class Profile extends Component {
                             </div> */}
                         </Col>
                     </Row>
-
-                    <Row>
-                        <Col>
-                            <h4>Playlists</h4>
-                            <p>something</p>
-                        </Col>
-                    </Row>
                 </div>
                 
                 <div className="right">

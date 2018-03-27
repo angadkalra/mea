@@ -36,3 +36,9 @@
     width: 80%;
     margin: auto;
 }
+
+@media screen and (max-width: 850px) {
+    .my-profile {
+        display: none;
+    }
+}
