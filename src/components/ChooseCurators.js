@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-import {Row, Col, Container, Button} from 'reactstrap'
+import {Row, Col, Container, Button, Jumbotron} from 'reactstrap'
 import ProfileSmall from '../components/ProfileSmall'
 import MyNavbar from '../components/Navbar'
 import axios from 'axios'
 import '../css/ChooseCurators.css'
 import FaCheck from 'react-icons/lib/fa/check'
+import FaSpinner from 'react-icons/lib/fa/spinner'
 
 export default class ChooseCurators extends Component {
     constructor(props) {
@@ -58,10 +59,19 @@ export default class ChooseCurators extends Component {
     render() {
 
         let navbarItems = []
+        let loading;
+        if (this.state.top.length < 1) {
+            loading = 
+            <Jumbotron style={{marginTop: "40vh"}}>
+                <h2>Your curators are being retrieved</h2>
+                <FaSpinner style={{fontSize: "3em"}}/>
+            </Jumbotron>
+        }
 
         return (
             <Container style={{textAlign: "center"}}>
                 <MyNavbar items={navbarItems} />
+                {loading}
                 <Row className="onboard-row">
                     {this.state.top.map((user, i) => {
                         return (
