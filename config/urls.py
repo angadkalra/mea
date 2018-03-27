@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^api/match/$', FindCuratorsView.as_view()),
     url(r'^api/recommend/$', RecommendMovieView.as_view()),
     # url(r'^generateTokens/$', GenerateTokensView.as_view())
+    url(r'^.*/$', FrontendAppView.as_view())
 ]
