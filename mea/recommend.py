@@ -7,12 +7,11 @@ from django.core import serializers
 # Given a user, find similar users based on Jaccard similarity
 # of movies they like.
 
-class SimilarUsers(): 
+class SimilarUsers: 
 
 	def find(user):
 		# number of users
 		n = Profile.objects.count()
-		print("Number of users: ", n)
 
 		# Create 2d array of profile id's and similarity scores
 		scores = np.zeros((n,2))  
@@ -53,12 +52,15 @@ class SimilarUsers():
 			
 			obj['firstName'] = profile.user.first_name
 			obj['lastName'] = profile.user.last_name
-			obj['id'] = profile.user.id
+			obj['id'] = profile.id
 			obj['username'] = profile.user.username
 
 			data.append(obj)
 
 		return data
+
+	def createProfileJson(pids):
+		pass
 
 
 
