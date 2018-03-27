@@ -10,7 +10,7 @@ export default class Movie extends Component {
 
     goto() {
         let url = '/profile/' + this.props.user.id;
-        if (this.props.history) {
+        if (this.props.history && this.props.clickable) {
             this.props.history.push(url);
         }
     }
@@ -18,12 +18,12 @@ export default class Movie extends Component {
     render() {
         console.log(this.props.user);
         return (
-            <div style={this.props.style} onClick={this.goto}>
-                {this.props.user.username}
-                <div>
-                    <img className="smallProfPic" src={ProfPic}/>
+            <div style={this.props.style} onClick={this.goto} className="smallProfContainer">
+                <p style={{margin: "0"}}>{this.props.user.username}</p>
+                <div className="smallProfPic">
+                    <img src={ProfPic}/>
                 </div>
-                {this.props.user.bio}
+                <p>{this.props.user.bio}</p>
             </div>
         )
     }

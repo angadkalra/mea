@@ -1,3 +1,15 @@
-.smallProfPic {
-    max-width: 90%;
+
+
+.smallProfPic > img {
+    height: 160px;
+    width: 150px;
+    margin: auto;
+}
+
+.smallProfContainer {
+    text-align: center;
+    height: 200px;
+    width: 150px;
+    display: inline-block;
+    position: relative !important;
 }
