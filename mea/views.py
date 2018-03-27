@@ -180,7 +180,7 @@ class PublicProfileView(views.APIView):
             data['username'] = current_profile.user.username
             data['id'] = current_profile.id
             data['bio'] = current_profile.bio
-            data['recommended_movies'] = []
+            data['recommendations'] = []
             data['movies'] = []
             data['followers'] = []
             data['followings'] = []
@@ -210,7 +210,7 @@ class PublicProfileView(views.APIView):
                 m_dict['posterUrl'] = m.poster
                 m_dict['year'] = m.year
                 m_dict['genres'] = m.genre
-                data['recommended_movies'].append(m_dict)
+                data['recommendations'].append(m_dict)
 
             user_followers = current_profile.followers.all()
             user_followings = current_profile.followings.all()
