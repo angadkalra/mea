@@ -54,6 +54,7 @@ class SimilarUsers:
 			obj['lastName'] = profile.user.last_name
 			obj['id'] = profile.id
 			obj['username'] = profile.user.username
+			obj['pictureUrl'] = profile.pic
 			obj['movies'] = []
 			for m in profile.movies.all():
 				dataMov = {}
