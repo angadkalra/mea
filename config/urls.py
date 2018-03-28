@@ -10,6 +10,7 @@ from django.conf.urls.static import static
 from mea.views import SignUpView, FrontendAppView, MoviesView, SignUpView2
 from mea.views import LogoutView, ProfileView, ProfileUpdateView, FindCuratorsView, PublicProfileView
 from mea.views import GetTopMoviesView, RecommendMovieView, SearchMoviesView
+from mea.views import GenerateProfilePicture
 
 urlpatterns = [
     url(r'^$', FrontendAppView.as_view()),

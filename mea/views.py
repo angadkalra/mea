@@ -315,15 +315,9 @@ class GenerateProfilePicture(views.APIView):
 
     def get(self, request, *args, **kwards):
 
-        index = 100;
         for profile in Profile.objects.all():
-            index = index+1
-            picurl = "http://graph.facebook.com/v2.5/" + str(index) + "/picture?height=200&height=200"
+            picurl = "https://picsum.photos/200/300/?random"
             r = requests.get(picurl).url
-            while 'SK.gif' in  r:
-                index = index+1
-                r = requests.get(picurl).url
-
             profile.pic = r
             profile.save()
 
