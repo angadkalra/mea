@@ -22,7 +22,7 @@ class CuratorMovies:
 
 		for m in new_movies:
 			data = {}
-			data['imdbID'] = m.imdbId 
+			data['imdbId'] = m.imdbId 
 			data['title'] = m.title
 			data['posterUrl'] = m.poster
 			recommendations.append(data)
