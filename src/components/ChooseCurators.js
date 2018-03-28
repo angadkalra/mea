@@ -78,7 +78,7 @@ export default class ChooseCurators extends Component {
                 <div className="contain" style={{paddingTop: "10vh", maxHeight: "80vh"}}>
                     {this.state.top.map((user) => {
                         return (
-                            <Row className="onboard-row">
+                            <Row className="choose-row">
                                 <div className="profile-cover" onClick={() => this.choose(user)}>
                                     <FaCheck id="check"/>
                                 </div>

@@ -80,44 +80,46 @@ export default class Profile extends Component {
                 <div className="right">
                     <h4> Movies </h4>
                     <Row className="profile-row">
-                        {user.movies.map((movie) => {
-                            return (
-                                <Movie style={{marginTop: "10px", cursor: "pointer"}} movie={movie} history={this.props.history}/>
-                            )
-                        })}
+                            <Col md="12">
+                            {user.movies.map((movie) => {
+                                return (
+                                    <Movie style={{marginTop: "10px", cursor: "pointer", display: "inline-block"}} movie={movie} history={this.props.history}/>
+                                )
+                            })}
+                            </Col>
                     </Row>  
 
                     <h4>Followers</h4>
                     <Row className="profile-row">
-                        {user.followers.map((f) => {
-                            return (
-                                <div>
-                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer", marginLeft: "5px", marginRight: "5px"}} user={f} history={this.props.history} clickable={true}/>
-                                </div>
-                            )
-                        })}
+                            <Col md="12">
+                            {user.followers.map((f) => {
+                                return (
+                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer", marginLeft: "5px", marginRight: "5px", display: "inline-block"}} user={f} history={this.props.history} clickable={true}/>
+                                )
+                            })}
+                            </Col>
                     </Row>
 
                     <h4>Recommended</h4>
                     <Row className="profile-row">
-                        {user.recommendations.map((movie) => {
-                            return (
-                                <div>
-                                    <Movie style={{cursor: "pointer"}} movie={movie} cover={cover} history={this.props.history}/>
-                                </div>
-                            )
-                        })}
+                        <Col md="12">
+                            {user.recommendations.map((movie) => {
+                                return (
+                                    <Movie style={{cursor: "pointer", display: "inline-block"}} movie={movie} cover={cover} history={this.props.history}/>
+                                )
+                            })}
+                        </Col>
                     </Row>
 
                     <h4>Following</h4>
                     <Row className="profile-row">
-                        {user.followings.map((f) => {
-                            return (
-                                <div>
-                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer", marginLeft: "5px", marginRight: "5px"}} user={f} history={this.props.history} clickable={true}/>
-                                </div>
-                            )
-                        })}
+                        <Col md="12">
+                            {user.followings.map((f) => {
+                                return (
+                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer", marginLeft: "5px", marginRight: "5px", display: "inline-block"}} user={f} history={this.props.history} clickable={true}/>
+                                )
+                            })}
+                        </Col>
                     </Row>
                 </div>
             </Container>
