@@ -21,10 +21,10 @@ export default class Movie extends Component {
             <div style={this.props.style} onClick={this.goto} className="smallProfContainer">
                 <p style={{margin: "0"}}>{this.props.user.username}</p>
                 <div className="smallProfPic">
-                    <img src={ProfPic}/>
+                    <img src={this.props.user.pictureUrl}/>
                 </div>
                 <p>{this.props.user.bio}</p>
             </div>
         )
     }
-}   
+}  

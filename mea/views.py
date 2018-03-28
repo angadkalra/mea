@@ -137,12 +137,14 @@ class ProfileView(views.APIView):
                 f_dict = {}
                 f_dict['username'] = f.user.username
                 f_dict['id'] = f.id
+                f_dict['pictureUrl'] = f.pic
                 data['followers'].append(f_dict)
 
             for f in user_followings:
                 f_dict = {}
                 f_dict['username'] = f.user.username
                 f_dict['id'] = f.id
+                f_dict['pictureUrl'] = f.pic
                 data['followings'].append(f_dict)
 
             user_recommended_movies = current_user.profile.recommended_movies.all()
@@ -222,12 +224,14 @@ class PublicProfileView(views.APIView):
                 f_dict = {}
                 f_dict['username'] = f.user.username
                 f_dict['id'] = f.id
+                f_dict['pictureUrl'] = f.pic
                 data['followers'].append(f_dict)
 
             for f in user_followings:
                 f_dict = {}
                 f_dict['username'] = f.user.username
                 f_dict['id'] = f.id
+                f_dict['pictureUrl'] = f.pic
                 data['followings'].append(f_dict)
 
             return HttpResponse(json.dumps(data))

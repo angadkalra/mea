@@ -92,7 +92,7 @@ export default class Profile extends Component {
                         {user.followers.map((f) => {
                             return (
                                 <div>
-                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer"}} user={f} history={this.props.history} clickable={true}/>
+                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer", marginLeft: "5px", marginRight: "5px"}} user={f} history={this.props.history} clickable={true}/>
                                 </div>
                             )
                         })}
@@ -114,7 +114,7 @@ export default class Profile extends Component {
                         {user.followings.map((f) => {
                             return (
                                 <div>
-                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer"}} user={f} history={this.props.history} clickable={true}/>
+                                    <ProfileSmall style={{marginTop: "10px", cursor: "pointer", marginLeft: "5px", marginRight: "5px"}} user={f} history={this.props.history} clickable={true}/>
                                 </div>
                             )
                         })}

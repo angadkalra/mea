@@ -24,7 +24,7 @@ class CuratorMovies:
 			data = {}
 			data['imdbID'] = m.imdbId 
 			data['title'] = m.title
-			data['poster'] = m.poster
+			data['posterUrl'] = m.poster
 			recommendations.append(data)
 
 		return recommendations
