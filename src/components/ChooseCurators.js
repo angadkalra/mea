@@ -80,7 +80,7 @@ export default class ChooseCurators extends Component {
                         return (
                             <Row className="choose-row">
                                 <div className="profile-cover" onClick={() => this.choose(user)}>
-                                    <FaCheck id="check"/>
+                                    <FaCheck id="checkCur"/>
                                 </div>
                                 <Col md="3">
                                     <ProfileSmall user={user} clickable={false}/>

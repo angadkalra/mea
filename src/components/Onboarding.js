@@ -69,7 +69,7 @@ export default class Onboarding extends Component {
                         return (
                             <div className="movie">
                                 <div className="movie-cover" onClick={() => this.choose(movie)}>
-                                    <FaCheck id="check"/>
+                                    <FaCheck id="checkOnb"/>
                                 </div>
                                 <Movie style={{position: "absolute"}} key={i} movie={movie} />
                             </div>
