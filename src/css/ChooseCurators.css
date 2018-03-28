@@ -27,16 +27,20 @@
 }
 
 .profile-cover:hover {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: pointer;
 }
 
 .onboard-row {
-    overflow-y: scroll;
-    height: 75vh;
-    margin-top: 100px;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 200px;
+    margin-top: 30px;
     /* padding-left: 10%; */
     padding-right: 0%;
+    width: 100%;
+    white-space: nowrap;
 }
 
 .onboard-profile {
@@ -46,7 +50,20 @@
 #check {
     color: white;
     font-size: 5em;
-    margin-top: 35%;
+    margin-top: 5%;
     /* margin-left: 15%; */
+}
+
+.curatorMovies {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.contain {
+    margin-top: 10vh;
+    max-height: 90vh;
+    overflow-y: scroll;
+    padding-top: 0px !important
 }
 
