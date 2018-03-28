@@ -1,5 +1,6 @@
 import logging, os, json
 from .recommend import SimilarUsers
+from .curator_movies import CuratorMovies
 
 from django.http import HttpResponse
 from .models import LandingPageUser, Movie, Profile
@@ -112,6 +113,7 @@ class ProfileView(views.APIView):
             data['followers'] = []
             data['followings'] = []
             data['recommendations'] = []
+            data['pictureUrl'] = current_user.profile.pic
             #data['picture'] = current_user.profile.profilePicture
             #PROFILE PICTURE IS TO DO
             user_movies = current_user.profile.movies.all()
@@ -143,8 +145,6 @@ class ProfileView(views.APIView):
                 f_dict['id'] = f.id
                 data['followings'].append(f_dict)
 
-
-
             user_recommended_movies = current_user.profile.recommended_movies.all()
 
             for m in user_recommended_movies:
@@ -156,6 +156,8 @@ class ProfileView(views.APIView):
                 m_dict['genres'] = m.genre
                 data['recommendations'].append(m_dict)
 
+            profileID = current_user.profile.id
+            data['recommendations'].extend(CuratorMovies.get(profileID))
 
             return HttpResponse(json.dumps(data))
 
@@ -180,6 +182,7 @@ class PublicProfileView(views.APIView):
             data['username'] = current_profile.user.username
             data['id'] = current_profile.id
             data['bio'] = current_profile.bio
+            data['pictureUrl'] = current_profile.pic
             data['recommendations'] = []
             data['movies'] = []
             data['followers'] = []
@@ -304,6 +307,29 @@ class ProfileUpdateView(views.APIView):
             return HttpResponse("Profile updated", status = 201)
         else:
             return HttpResponse("No change made - check format", status = 400)
+
+
+import requests
+
+class GenerateProfilePicture(views.APIView):
+
+    def get(self, request, *args, **kwards):
+
+        index = 100;
+        for profile in Profile.objects.all():
+            index = index+1
+            picurl = "http://graph.facebook.com/v2.5/" + str(index) + "/picture?height=200&height=200"
+            r = requests.get(picurl).url
+            while 'SK.gif' in  r:
+                index = index+1
+                r = requests.get(picurl).url
+
+            profile.pic = r
+            profile.save()
+
+
+        return HttpResponse("gucci", status = 200)
+
           
 class FrontendAppView(View):
     """
@@ -488,6 +514,7 @@ class MoviesView(views.APIView):
                 return HttpResponse("Invalid IMDB id", status = 400)
         except KeyError:
             return HttpResponse('Request Not Understood.', status = 400)
+
 
 #------------------------------Helper Functions-----------------------------#
 
