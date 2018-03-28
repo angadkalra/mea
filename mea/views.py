@@ -69,6 +69,11 @@ class SignUpView2(views.APIView):
             user = User.objects.create_user(username, email, password)
             user.first_name = firstName
             user.last_name = lastName
+
+            picurl = "https://picsum.photos/200/300/?random"
+            r = requests.get(picurl).url
+            user.profile.pic = r
+            user.profile.save()
             user.save()
         
         except Exception as e:
