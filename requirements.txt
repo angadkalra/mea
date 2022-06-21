@@ -31,4 +31,4 @@ urllib3==1.22
 virtualenv==15.1.0
 virtualenv-clone==0.3.0
 whitenoise==3.3.1
-numpy==1.13.1
+numpy==1.22.0
